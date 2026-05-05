@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Civil War Training Game</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Georgia, serif;
+  background:#111;
+  color:#f3f3f3;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  height:100vh;
+}
+
+.game{
+  width:90%;
+  max-width:700px;
+  background:#1e1e1e;
+  padding:2rem;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,0.1);
+  text-align:center;
+}
+
+h1{
+  color:#c7a26a;
+}
+
+button{
+  display:block;
+  width:100%;
+  margin:10px 0;
+  padding:12px;
+  background:#2a2a2a;
+  color:white;
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:10px;
+  cursor:pointer;
+  transition:.2s;
+}
+
+button:hover{
+  background:#c7a26a;
+  color:black;
+}
+
+#score{
+  margin-top:15px;
+  color:#c7a26a;
+}
+</style>
+</head>
+
+<body>
+
+<div class="game">
+
+  <h1>Civil War Training Drill</h1>
+  <p id="story">You are a new recruit in camp. Your first decision awaits.</p>
+
+  <div id="choices"></div>
+
+  <div id="score">Knowledge Score: 0</div>
+
+</div>
+
+<script>
+
+let score = 0;
+
+const scenarios = [
+  {
+    text: "You wake up at dawn. What do you do first?",
+    options: [
+      { text: "Skip inspection and rest", correct: false },
+      { text: "Report for roll call immediately", correct: true }
+    ]
+  },
+  {
+    text: "Your water source looks dirty. What do you do?",
+    options: [
+      { text: "Drink it anyway", correct: false },
+      { text: "Boil or avoid it", correct: true }
+    ]
+  },
+  {
+    text: "Your rifle is dirty before battle. What now?",
+    options: [
+      { text: "Clean it immediately", correct: true },
+      { text: "Ignore it", correct: false }
+    ]
+  },
+  {
+    text: "A soldier nearby is sick with fever.",
+    options: [
+      { text: "Share gear with him", correct: false },
+      { text: "Keep distance and report it", correct: true }
+    ]
+  },
+  {
+    text: "You are ordered to march.",
+    options: [
+      { text: "Follow formation exactly", correct: true },
+      { text: "Leave formation to rest", correct: false }
+    ]
+  }
+];
+
+let index = 0;
+
+function loadQuestion(){
+  if(index >= scenarios.length){
+    document.getElementById("story").innerText =
+      "Training complete. You are ready for service.";
+    document.getElementById("choices").innerHTML = "";
+    return;
+  }
+
+  let q = scenarios[index];
+
+  document.getElementById("story").innerText = q.text;
+
+  let choicesDiv = document.getElementById("choices");
+  choicesDiv.innerHTML = "";
+
+  q.options.forEach(opt => {
+    let btn = document.createElement("button");
+    btn.innerText = opt.text;
+
+    btn.onclick = () => {
+      if(opt.correct){
+        score += 10;
+        document.getElementById("score").innerText = "Knowledge Score: " + score;
+      }
+      index++;
+      loadQuestion();
+    };
+
+    choicesDiv.appendChild(btn);
+  });
+}
+
+loadQuestion();
+
+</script>
+
+</body>
+</html>
