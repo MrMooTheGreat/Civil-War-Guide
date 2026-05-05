@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Civil War Training Game</title>
+<title>Civil War Camp Survival</title>
 
 <style>
 body{
@@ -11,33 +11,64 @@ body{
   background:#111;
   color:#f3f3f3;
   display:flex;
-  align-items:center;
   justify-content:center;
+  align-items:center;
   height:100vh;
 }
 
 .game{
   width:90%;
-  max-width:700px;
-  background:#1e1e1e;
-  padding:2rem;
+  max-width:800px;
+  background:#1c1c1c;
   border-radius:16px;
+  padding:2rem;
   border:1px solid rgba(255,255,255,0.1);
-  text-align:center;
 }
 
 h1{
   color:#c7a26a;
+  margin-bottom:10px;
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+  margin:20px 0;
+}
+
+.stat{
+  background:#222;
+  padding:10px;
+  border-radius:10px;
+  text-align:center;
+}
+
+.bar{
+  height:10px;
+  background:#333;
+  border-radius:5px;
+  margin-top:5px;
+  overflow:hidden;
+}
+
+.fill{
+  height:100%;
+  width:50%;
+  background:#c7a26a;
+}
+
+.actions{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
 }
 
 button{
-  display:block;
-  width:100%;
-  margin:10px 0;
   padding:12px;
   background:#2a2a2a;
-  color:white;
   border:1px solid rgba(255,255,255,0.1);
+  color:white;
   border-radius:10px;
   cursor:pointer;
   transition:.2s;
@@ -48,9 +79,15 @@ button:hover{
   color:black;
 }
 
-#score{
+#log{
   margin-top:15px;
-  color:#c7a26a;
+  padding:10px;
+  background:#151515;
+  border-radius:10px;
+  height:80px;
+  overflow:auto;
+  font-size:.9rem;
+  color:#ccc;
 }
 </style>
 </head>
@@ -59,92 +96,142 @@ button:hover{
 
 <div class="game">
 
-  <h1>Civil War Training Drill</h1>
-  <p id="story">You are a new recruit in camp. Your first decision awaits.</p>
+<h1>Civil War Camp Survival</h1>
+<p>Survive 7 days in camp. Manage your soldier wisely.</p>
 
-  <div id="choices"></div>
+<div class="stats">
 
-  <div id="score">Knowledge Score: 0</div>
+  <div class="stat">
+    Hunger
+    <div class="bar"><div id="hunger" class="fill"></div></div>
+  </div>
+
+  <div class="stat">
+    Health
+    <div class="bar"><div id="health" class="fill"></div></div>
+  </div>
+
+  <div class="stat">
+    Fatigue
+    <div class="bar"><div id="fatigue" class="fill"></div></div>
+  </div>
+
+  <div class="stat">
+    Morale
+    <div class="bar"><div id="morale" class="fill"></div></div>
+  </div>
+
+</div>
+
+<div class="actions">
+
+<button onclick="action('eat')">Eat Rations</button>
+<button onclick="action('rest')">Rest</button>
+<button onclick="action('drill')">Drill Training</button>
+<button onclick="action('work')">Camp Duty</button>
+
+</div>
+
+<div id="log"></div>
 
 </div>
 
 <script>
 
-let score = 0;
+let stats = {
+  hunger: 60,
+  health: 70,
+  fatigue: 40,
+  morale: 60,
+  day: 1
+};
 
-const scenarios = [
-  {
-    text: "You wake up at dawn. What do you do first?",
-    options: [
-      { text: "Skip inspection and rest", correct: false },
-      { text: "Report for roll call immediately", correct: true }
-    ]
-  },
-  {
-    text: "Your water source looks dirty. What do you do?",
-    options: [
-      { text: "Drink it anyway", correct: false },
-      { text: "Boil or avoid it", correct: true }
-    ]
-  },
-  {
-    text: "Your rifle is dirty before battle. What now?",
-    options: [
-      { text: "Clean it immediately", correct: true },
-      { text: "Ignore it", correct: false }
-    ]
-  },
-  {
-    text: "A soldier nearby is sick with fever.",
-    options: [
-      { text: "Share gear with him", correct: false },
-      { text: "Keep distance and report it", correct: true }
-    ]
-  },
-  {
-    text: "You are ordered to march.",
-    options: [
-      { text: "Follow formation exactly", correct: true },
-      { text: "Leave formation to rest", correct: false }
-    ]
-  }
-];
+function updateUI(){
 
-let index = 0;
+  document.getElementById("hunger").style.width = stats.hunger + "%";
+  document.getElementById("health").style.width = stats.health + "%";
+  document.getElementById("fatigue").style.width = stats.fatigue + "%";
+  document.getElementById("morale").style.width = stats.morale + "%";
 
-function loadQuestion(){
-  if(index >= scenarios.length){
-    document.getElementById("story").innerText =
-      "Training complete. You are ready for service.";
-    document.getElementById("choices").innerHTML = "";
+  checkGameOver();
+}
+
+function log(msg){
+  let box = document.getElementById("log");
+  box.innerHTML = msg + "<br>" + box.innerHTML;
+}
+
+function nextDay(){
+  stats.day++;
+
+  stats.hunger -= 10;
+  stats.fatigue += 10;
+
+  if(stats.hunger < 40) stats.health -= 5;
+  if(stats.fatigue > 70) stats.morale -= 5;
+
+  log("Day " + stats.day + " begins in camp...");
+}
+
+function action(type){
+
+  if(stats.day > 7){
+    log("Training complete.");
     return;
   }
 
-  let q = scenarios[index];
+  if(type === "eat"){
+    stats.hunger += 25;
+    stats.morale += 5;
+    log("You eat hardtack and drink water.");
+  }
 
-  document.getElementById("story").innerText = q.text;
+  if(type === "rest"){
+    stats.fatigue -= 25;
+    stats.health += 5;
+    log("You rest in your tent.");
+  }
 
-  let choicesDiv = document.getElementById("choices");
-  choicesDiv.innerHTML = "";
+  if(type === "drill"){
+    stats.fatigue += 15;
+    stats.morale += 10;
+    log("You drill with your unit.");
+  }
 
-  q.options.forEach(opt => {
-    let btn = document.createElement("button");
-    btn.innerText = opt.text;
+  if(type === "work"){
+    stats.fatigue += 10;
+    stats.hunger -= 5;
+    log("You perform camp duties.");
+  }
 
-    btn.onclick = () => {
-      if(opt.correct){
-        score += 10;
-        document.getElementById("score").innerText = "Knowledge Score: " + score;
-      }
-      index++;
-      loadQuestion();
-    };
+  // clamp
+  for(let k in stats){
+    if(k !== "day"){
+      stats[k] = Math.max(0, Math.min(100, stats[k]));
+    }
+  }
 
-    choicesDiv.appendChild(btn);
-  });
+  updateUI();
+
+  if(Math.random() < 0.5){
+    nextDay();
+  }
 }
 
-loadQuestion();
+function checkGameOver(){
+
+  if(stats.health <= 0){
+    log("You fell ill in camp. Game over.");
+  }
+
+  if(stats.day > 7){
+    log("You survived the week in camp. Training complete.");
+  }
+}
+
+updateUI();
+
+log("You arrive at camp. Survive 7 days.");
 
 </script>
 
