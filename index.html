@@ -1,1031 +1,500 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
   <meta charset="UTF-8" />
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
   <title>Civil War Guide</title>
 
-
-
   <!-- Fonts -->
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
-
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-
-
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=EB+Garamond:wght@400;500;700&display=swap" rel="stylesheet">
-
-
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Cormorant+Garamond:wght@400;500;700&display=swap" rel="stylesheet">
 
   <style>
 
-
-
     :root{
-
-      --bg:#16120f;
-
-      --bg2:#221b16;
-
-      --card:#2a211b;
-
-      --accent:#b08a57;
-
-      --text:#f2ebe2;
-
-      --muted:#cfc4b5;
-
-      --border:rgba(255,255,255,0.08);
-
+      --paper:#d7c2a3;
+      --paper-dark:#c0aa88;
+      --ink:#24170f;
+      --brown:#4a3322;
+      --wood:#5f4330;
+      --gold:#8e6a3e;
+      --shadow:rgba(0,0,0,.35);
     }
-
-
 
     *{
-
       margin:0;
-
       padding:0;
-
       box-sizing:border-box;
-
     }
-
-
 
     html{
-
       scroll-behavior:smooth;
-
     }
-
-
 
     body{
-
       background:
-
-        linear-gradient(rgba(12,10,8,.88), rgba(12,10,8,.92)),
-
-        url("https://images.unsplash.com/photo-1518562180175-34a163b1a9a6?q=80&w=1600&auto=format&fit=crop")
-
+        linear-gradient(rgba(32,20,12,.82), rgba(24,16,10,.88)),
+        url("https://images.unsplash.com/photo-1518562180175-34a163b1a9a6?q=80&w=1800&auto=format&fit=crop")
         center/cover fixed;
 
-
-
-      color:var(--text);
-
-
-
-      font-family:"EB Garamond", serif;
-
-
-
+      font-family:"Cormorant Garamond", serif;
+      color:var(--ink);
       line-height:1.8;
-
-
-
       overflow-x:hidden;
-
     }
 
-
-
-    /* TEXTURE OVERLAY */
-
-
+    /* AGED PAPER TEXTURE */
 
     body::before{
-
       content:"";
-
       position:fixed;
-
       inset:0;
 
-
-
       background:
+        url("https://www.transparenttextures.com/patterns/old-paper.png");
 
-        url("https://www.transparenttextures.com/patterns/old-wall.png");
-
-
-
-      opacity:.12;
-
-
-
+      opacity:.32;
       pointer-events:none;
-
-
-
       z-index:-1;
-
     }
-
-
 
     /* HEADER */
 
-
-
     header{
-
-      min-height:90vh;
-
-
+      min-height:95vh;
 
       display:flex;
-
       flex-direction:column;
-
       justify-content:center;
-
       align-items:center;
-
-
 
       text-align:center;
 
-
-
-      padding:4rem 2rem;
-
-
+      padding:5rem 2rem;
 
       position:relative;
 
-
-
       background:
-
-        linear-gradient(rgba(0,0,0,.72), rgba(0,0,0,.82)),
-
-        url("https://images.unsplash.com/photo-1508615039623-a25605d2b022?q=80&w=1600&auto=format&fit=crop")
-
+        linear-gradient(rgba(15,10,7,.75), rgba(15,10,7,.85)),
+        url("https://images.unsplash.com/photo-1508615039623-a25605d2b022?q=80&w=1800&auto=format&fit=crop")
         center/cover no-repeat;
 
+      border-bottom:6px double rgba(215,194,163,.35);
     }
-
-
 
     header::after{
-
       content:"";
-
       position:absolute;
-
       inset:0;
 
-
-
       background:
-
-        radial-gradient(circle at center, transparent 20%, rgba(0,0,0,.4) 100%);
-
+        radial-gradient(circle at center, transparent 10%, rgba(0,0,0,.45) 100%);
     }
 
-
-
     header h1{
-
       position:relative;
-
       z-index:2;
-
-
 
       font-family:"Cinzel", serif;
 
+      font-size:clamp(3rem, 7vw, 6.5rem);
 
+      text-transform:uppercase;
 
-      font-size:clamp(3rem, 7vw, 6rem);
+      max-width:1100px;
 
-
+      color:#efe2c8;
 
       line-height:1.1;
 
-
-
-      max-width:1000px;
-
-
+      letter-spacing:3px;
 
       margin-bottom:1.5rem;
 
-
-
-      text-transform:uppercase;
-
-
-
-      letter-spacing:2px;
-
-
-
       text-shadow:
-
-        0 2px 10px rgba(0,0,0,.6),
-
-        0 0 30px rgba(0,0,0,.4);
-
+        0 2px 0 #000,
+        0 6px 18px rgba(0,0,0,.7);
     }
 
-
-
     header p{
-
       position:relative;
-
       z-index:2;
 
+      max-width:760px;
 
+      color:#d8c4a2;
 
-      max-width:700px;
-
-
-
-      color:#ddd0c0;
-
-
-
-      font-size:1.3rem;
-
-
+      font-size:1.45rem;
 
       letter-spacing:.5px;
 
+      font-style:italic;
     }
 
-
-
-    /* NAV */
-
-
+    /* NAVIGATION */
 
     nav{
-
       position:sticky;
-
       top:0;
-
       z-index:1000;
 
-
-
       display:flex;
-
       justify-content:center;
-
       flex-wrap:wrap;
+      gap:.5rem;
 
-      gap:1rem;
+      padding:1rem;
 
+      background:
+        linear-gradient(to bottom, #4d3524, #382419);
 
+      border-top:2px solid rgba(255,255,255,.08);
+      border-bottom:4px double rgba(215,194,163,.25);
 
-      padding:1rem 2rem;
-
-
-
-      background:rgba(20,16,13,.92);
-
-
-
-      backdrop-filter:blur(10px);
-
-
-
-      border-top:1px solid rgba(255,255,255,.05);
-
-      border-bottom:1px solid rgba(255,255,255,.08);
-
-
-
-      box-shadow:0 5px 20px rgba(0,0,0,.35);
-
+      box-shadow:
+        0 5px 15px rgba(0,0,0,.4);
     }
 
-
-
     nav a{
-
-      color:var(--muted);
-
-
+      color:#ead9bb;
 
       text-decoration:none;
 
+      padding:.7rem 1.2rem;
 
-
-      font-size:1rem;
-
-
-
-      text-transform:uppercase;
-
-
+      font-size:.95rem;
 
       letter-spacing:1px;
 
+      text-transform:uppercase;
 
+      border:1px solid transparent;
 
-      padding:.6rem 1rem;
+      transition:.25s ease;
 
-
-
-      border-radius:999px;
-
-
-
-      transition:.3s ease;
-
+      font-family:"Cinzel", serif;
     }
-
-
 
     nav a:hover{
+      background:rgba(255,255,255,.06);
 
-      color:var(--text);
+      border-color:rgba(255,255,255,.15);
 
-
-
-      background:rgba(176,138,87,.15);
-
-
-
-      transform:translateY(-2px);
-
+      color:#fff7ea;
     }
-
-
 
     /* MAIN */
 
-
-
     main{
-
       padding:6rem 8%;
-
     }
-
-
-
-    .two-column{
-
-      display:grid;
-
-      grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-
-      gap:4rem;
-
-      align-items:center;
-
-    }
-
-
-
-    /* TEXT BLOCK */
-
-
-
-    h2{
-
-      font-family:"Cinzel", serif;
-
-
-
-      font-size:3rem;
-
-
-
-      margin-bottom:1.5rem;
-
-
-
-      color:var(--accent);
-
-
-
-      letter-spacing:1px;
-
-    }
-
-
-
-    p{
-
-      margin-bottom:1.4rem;
-
-
-
-      color:#ddd3c6;
-
-
-
-      font-size:1.15rem;
-
-    }
-
-
-
-    /* BUTTON */
-
-
-
-    .button{
-
-      display:inline-block;
-
-
-
-      margin-top:1rem;
-
-
-
-      padding:1rem 2rem;
-
-
-
-      background:linear-gradient(
-
-        to bottom,
-
-        #b08a57,
-
-        #8f6a3f
-
-      );
-
-
-
-      color:#fff;
-
-
-
-      text-decoration:none;
-
-
-
-      font-weight:bold;
-
-
-
-      letter-spacing:1px;
-
-
-
-      text-transform:uppercase;
-
-
-
-      border-radius:6px;
-
-
-
-      border:1px solid rgba(255,255,255,.08);
-
-
-
-      box-shadow:
-
-        0 6px 18px rgba(0,0,0,.35),
-
-        inset 0 1px 0 rgba(255,255,255,.15);
-
-
-
-      transition:.3s ease;
-
-    }
-
-
-
-    .button:hover{
-
-      transform:translateY(-4px);
-
-
-
-      box-shadow:
-
-        0 10px 25px rgba(0,0,0,.45),
-
-        inset 0 1px 0 rgba(255,255,255,.2);
-
-    }
-
-
-
-    /* IMAGE CARD */
-
-
-
-    .image-card{
-
-      position:relative;
-
-
-
-      overflow:hidden;
-
-
-
-      border-radius:20px;
-
-
-
-      border:1px solid rgba(255,255,255,.08);
-
-
-
-      background:#000;
-
-
-
-      box-shadow:
-
-        0 15px 40px rgba(0,0,0,.45),
-
-        inset 0 0 0 1px rgba(255,255,255,.03);
-
-
-
-      transform:rotate(-1deg);
-
-
-
-      transition:.4s ease;
-
-    }
-
-
-
-    .image-card:hover{
-
-      transform:rotate(0deg) scale(1.02);
-
-    }
-
-
-
-    .image-card img{
-
-      width:100%;
-
-      display:block;
-
-
-
-      filter:
-
-        sepia(.35)
-
-        contrast(1.05)
-
-        brightness(.88);
-
-
-
-      transition:transform .7s ease;
-
-    }
-
-
-
-    .image-card:hover img{
-
-      transform:scale(1.05);
-
-    }
-
-
-
-    .image-card::after{
-
-      content:"";
-
-      position:absolute;
-
-      inset:0;
-
-
-
-      background:
-
-        linear-gradient(
-
-          to top,
-
-          rgba(0,0,0,.88),
-
-          rgba(0,0,0,.15)
-
-        );
-
-    }
-
-
-
-    .image-content{
-
-      position:absolute;
-
-      bottom:0;
-
-      left:0;
-
-      right:0;
-
-
-
-      padding:2rem;
-
-
-
-      z-index:2;
-
-    }
-
-
-
-    .image-content strong{
-
-      display:block;
-
-
-
-      font-size:1.7rem;
-
-
-
-      margin-bottom:.5rem;
-
-
-
-      color:#fff;
-
-
-
-      font-family:"Cinzel", serif;
-
-    }
-
-
-
-    .image-content p{
-
-      margin:0;
-
-
-
-      color:#ddd0c0;
-
-    }
-
-
-
-    /* SECTION CARD */
-
-
 
     section{
+      background:
+        linear-gradient(
+          to bottom,
+          rgba(215,194,163,.97),
+          rgba(198,174,141,.97)
+        );
 
-      background:rgba(31,24,19,.82);
+      border:2px solid rgba(58,39,24,.55);
 
-
-
-      border:1px solid rgba(255,255,255,.06);
-
-
-
-      border-radius:28px;
-
-
+      box-shadow:
+        0 12px 30px rgba(0,0,0,.45),
+        inset 0 0 60px rgba(90,60,35,.18);
 
       padding:4rem;
 
-
-
-      backdrop-filter:blur(6px);
-
-
-
-      box-shadow:
-
-        0 10px 35px rgba(0,0,0,.4);
-
-
-
       position:relative;
 
-
-
       overflow:hidden;
-
     }
-
-
 
     section::before{
-
       content:"";
-
       position:absolute;
+      inset:12px;
 
-      inset:0;
-
-
-
-      background:
-
-        linear-gradient(
-
-          135deg,
-
-          rgba(255,255,255,.02),
-
-          transparent 40%
-
-        );
-
-
+      border:1px solid rgba(58,39,24,.35);
 
       pointer-events:none;
-
     }
 
+    .two-column{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+      gap:4rem;
+      align-items:center;
+    }
 
+    h2{
+      font-family:"Cinzel", serif;
 
-    /* FOOTER */
+      font-size:3rem;
 
+      margin-bottom:1.5rem;
 
+      color:#3a2417;
 
-    footer{
+      text-transform:uppercase;
 
-      text-align:center;
+      letter-spacing:1px;
+    }
 
+    p{
+      font-size:1.35rem;
 
+      color:#2a1c13;
 
-      padding:2rem;
+      margin-bottom:1.5rem;
+    }
 
+    /* BUTTON */
 
+    .button{
+      display:inline-block;
 
-      color:#b8aa97;
+      margin-top:1rem;
 
+      padding:1rem 2rem;
 
+      background:
+        linear-gradient(to bottom, #7a5638, #5a3d29);
 
-      border-top:1px solid rgba(255,255,255,.05);
+      color:#f4ead7;
 
+      text-decoration:none;
 
+      font-weight:bold;
 
-      background:#120f0d;
-
-
+      text-transform:uppercase;
 
       letter-spacing:1px;
 
+      border:2px solid rgba(0,0,0,.25);
+
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.12),
+        0 4px 10px rgba(0,0,0,.35);
+
+      transition:.25s ease;
+
+      font-family:"Cinzel", serif;
     }
 
+    .button:hover{
+      transform:translateY(-3px);
 
+      background:
+        linear-gradient(to bottom, #8b6545, #68462f);
+    }
+
+    /* IMAGE CARD */
+
+    .image-card{
+      position:relative;
+
+      background:#2b1d14;
+
+      padding:14px;
+
+      border:4px solid #4a3322;
+
+      box-shadow:
+        0 15px 30px rgba(0,0,0,.45);
+
+      transform:rotate(-1.5deg);
+
+      transition:.35s ease;
+    }
+
+    .image-card:hover{
+      transform:rotate(0deg) scale(1.02);
+    }
+
+    .image-card img{
+      width:100%;
+      display:block;
+
+      border:3px solid #c6ae8d;
+
+      filter:
+        sepia(.65)
+        contrast(1.05)
+        brightness(.9)
+        grayscale(.15);
+    }
+
+    .image-content{
+      padding:1.5rem .5rem .3rem;
+      text-align:center;
+    }
+
+    .image-content strong{
+      display:block;
+
+      font-family:"Cinzel", serif;
+
+      font-size:1.7rem;
+
+      color:#f1e4cb;
+
+      margin-bottom:.5rem;
+
+      letter-spacing:1px;
+    }
+
+    .image-content p{
+      margin:0;
+
+      color:#d7c1a0;
+
+      font-size:1.1rem;
+
+      font-style:italic;
+    }
+
+    /* FOOTER */
+
+    footer{
+      text-align:center;
+
+      padding:2rem;
+
+      background:#1f140e;
+
+      color:#c7b191;
+
+      border-top:4px double rgba(215,194,163,.25);
+
+      letter-spacing:1px;
+
+      font-size:1rem;
+    }
 
     /* RESPONSIVE */
 
-
-
     @media (max-width:768px){
 
-
-
       header{
-
-        min-height:75vh;
-
+        min-height:78vh;
       }
 
-
-
-      main{
-
-        padding:4rem 6%;
-
+      header h1{
+        font-size:3.4rem;
       }
-
-
-
-      section{
-
-        padding:2rem;
-
-      }
-
-
-
-      h2{
-
-        font-size:2.2rem;
-
-      }
-
-
 
       header p{
-
-        font-size:1.1rem;
-
+        font-size:1.15rem;
       }
 
+      main{
+        padding:4rem 5%;
+      }
 
+      section{
+        padding:2rem;
+      }
+
+      h2{
+        font-size:2.2rem;
+      }
+
+      p{
+        font-size:1.15rem;
+      }
 
       nav{
-
-        gap:.5rem;
-
+        gap:.2rem;
       }
-
-
 
       nav a{
-
-        font-size:.85rem;
-
-        padding:.5rem .8rem;
-
+        font-size:.75rem;
+        padding:.55rem .7rem;
       }
-
-
 
     }
 
-
-
   </style>
-
-
-
 </head>
-
-
 
 <body>
 
-
-
 <header>
-
-
 
   <h1>So You've Joined the Army, Soldier</h1>
 
-
-
   <p>
-
     A practical and visual guide to life during the American Civil War.
-
   </p>
-
-
 
 </header>
 
-
-
 <nav>
-
   <a href="index.html">Home</a>
-
   <a href="training.html">Training</a>
-
   <a href="uniforms.html">Uniforms</a>
-
   <a href="health.html">Health</a>
-
   <a href="battles.html">Battles</a>
-
   <a href="camp.html">Camp Life</a>
-
   <a href="gallery.html">Gallery</a>
-
 </nav>
-
-
 
 <main>
 
-
-
 <section>
-
-
 
   <div class="two-column">
 
-
-
     <div>
-
-
 
       <h2>Welcome Recruit</h2>
 
-
-
       <p>
-
         You have traded civilian life for military service.
-
         Most of your days will be spent marching, drilling,
-
         waiting, and surviving difficult camp conditions.
-
       </p>
-
-
 
       <p>
-
         Explore each section to learn about training,
-
         uniforms, disease, battle, and daily life.
-
       </p>
-
-
 
       <a href="training.html" class="button">
-
         Begin the Guide
-
       </a>
 
-
-
     </div>
-
-
 
     <div class="image-card">
 
-
-
       <img src="https://cdn.loc.gov/service/pnp/cwpb/01100/01141v.jpg">
-
-
 
       <div class="image-content">
 
-
-
         <strong>New Recruits</strong>
 
-
-
         <p>
-
           Volunteer soldiers arriving at camp.
-
         </p>
-
-
 
       </div>
 
-
-
     </div>
-
-
 
   </div>
 
-
-
 </section>
-
-
 
 </main>
 
-
-
 <footer>
-
   Educational historical content.
-
 </footer>
 
-
-
 </body>
-
 </html>
