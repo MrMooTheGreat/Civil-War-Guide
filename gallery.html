@@ -1,28 +1,525 @@
-<main>
+<main class="gallery-page">
 
-<section>
-  <h2>Civil War Gallery</h2>
+  <!-- HERO -->
+  <section class="hero">
 
-  <div class="two-column">
+    <div class="hero-overlay"></div>
 
-    <div class="image-card">
-      <img src="https://cdn.loc.gov/service/pnp/cwpb/01100/01144v.jpg">
+    <div class="hero-content">
 
-      <div class="image-content">
-        <strong>Company Street</strong>
-      </div>
+      <span class="hero-tag">Historical Photography</span>
+
+      <h1>Civil War Gallery</h1>
+
+      <p>
+        Explore scenes from camp life, military organization, and the everyday
+        experiences of soldiers during the American Civil War through preserved
+        historical photography.
+      </p>
+
     </div>
 
-    <div class="image-card">
-      <img src="https://cdn.loc.gov/service/pnp/cwpb/01100/01143v.jpg">
+  </section>
 
-      <div class="image-content">
-        <strong>Letters Home</strong>
-      </div>
+  <!-- FEATURED GALLERY -->
+  <section class="content-section">
+
+    <div class="section-header center">
+      <span>Featured Collection</span>
+      <h2>Life During the War</h2>
     </div>
 
-  </div>
+    <div class="gallery-grid">
 
-</section>
+      <!-- IMAGE 1 -->
+      <div class="image-card large">
+
+        <img
+          src="https://cdn.loc.gov/service/pnp/cwpb/01100/01144v.jpg"
+          alt="Company Street"
+        >
+
+        <div class="image-overlay"></div>
+
+        <div class="image-content">
+
+          <span class="image-tag">Camp Life</span>
+
+          <strong>Company Street</strong>
+
+          <p>
+            Organized rows of tents formed temporary military communities where
+            soldiers spent much of their daily lives.
+          </p>
+
+        </div>
+
+      </div>
+
+      <!-- IMAGE 2 -->
+      <div class="image-card">
+
+        <img
+          src="https://cdn.loc.gov/service/pnp/cwpb/01100/01143v.jpg"
+          alt="Letters Home"
+        >
+
+        <div class="image-overlay"></div>
+
+        <div class="image-content">
+
+          <span class="image-tag">Personal Moments</span>
+
+          <strong>Letters Home</strong>
+
+          <p>
+            Writing letters connected soldiers to loved ones and offered comfort
+            during long periods away from home.
+          </p>
+
+        </div>
+
+      </div>
+
+      <!-- EXTRA CARD -->
+      <div class="quote-card">
+
+        <span class="quote-mark">“</span>
+
+        <p>
+          Soldiers often described camp life as a strange mixture of boredom,
+          exhaustion, friendship, and uncertainty.
+        </p>
+
+        <div class="quote-line"></div>
+
+        <small>Civil War Journals</small>
+
+      </div>
+
+      <!-- EXTRA INFO -->
+      <div class="info-card">
+
+        <h3>Photography & History</h3>
+
+        <p>
+          Civil War photography transformed how Americans understood war. For
+          the first time, large numbers of people could see real images of
+          soldiers, camps, and battlefields.
+        </p>
+
+        <ul class="styled-list">
+          <li>Early wartime photography</li>
+          <li>Detailed camp documentation</li>
+          <li>Preserved military scenes</li>
+          <li>Historical visual records</li>
+        </ul>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- FULL WIDTH IMAGE -->
+  <section class="banner-section">
+
+    <div class="banner-card">
+
+      <img
+        src="https://images.unsplash.com/photo-1521295121783-8a321d551ad2?q=80&w=1600&auto=format&fit=crop"
+        alt="Civil War landscape"
+      >
+
+      <div class="banner-content">
+
+        <span>Historical Reflection</span>
+
+        <h2>Images That Preserved History</h2>
+
+        <p>
+          These photographs captured moments of daily military life, preserving
+          the atmosphere and reality of the Civil War for future generations.
+        </p>
+
+      </div>
+
+    </div>
+
+  </section>
 
 </main>
+
+<style>
+
+:root{
+  --bg:#111111;
+  --bg2:#191919;
+  --card:#202020;
+  --accent:#c8a56c;
+  --text:#f3f3f3;
+  --muted:#d2d2d2;
+  --border:rgba(255,255,255,0.08);
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:"Georgia", serif;
+  line-height:1.8;
+}
+
+main{
+  overflow:hidden;
+}
+
+/* HERO */
+
+.hero{
+  position:relative;
+  min-height:75vh;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+
+  padding:4rem 2rem;
+
+  background:
+    linear-gradient(rgba(0,0,0,.72), rgba(0,0,0,.8)),
+    url("https://images.unsplash.com/photo-1508615039623-a25605d2b022?q=80&w=1600&auto=format&fit=crop")
+    center/cover no-repeat;
+}
+
+.hero-content{
+  position:relative;
+  z-index:2;
+  max-width:850px;
+}
+
+.hero-tag{
+  display:inline-block;
+  padding:.45rem 1rem;
+  border:1px solid rgba(255,255,255,.2);
+  border-radius:999px;
+  color:var(--accent);
+  margin-bottom:1.5rem;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  font-size:.85rem;
+}
+
+.hero h1{
+  font-size:clamp(3rem, 8vw, 6rem);
+  line-height:1;
+  margin-bottom:1.5rem;
+}
+
+.hero p{
+  max-width:700px;
+  margin:auto;
+  color:#dddddd;
+  font-size:1.15rem;
+}
+
+/* SECTIONS */
+
+.content-section{
+  padding:6rem 8%;
+}
+
+.section-header{
+  margin-bottom:3rem;
+}
+
+.section-header span{
+  color:var(--accent);
+  text-transform:uppercase;
+  letter-spacing:1px;
+  font-size:.85rem;
+}
+
+.section-header h2{
+  font-size:2.7rem;
+  margin-top:.5rem;
+}
+
+.center{
+  text-align:center;
+}
+
+/* GRID */
+
+.gallery-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:2rem;
+}
+
+.large{
+  grid-column:span 2;
+}
+
+@media (max-width:900px){
+  .large{
+    grid-column:span 1;
+  }
+}
+
+/* IMAGE CARD */
+
+.image-card{
+  position:relative;
+  overflow:hidden;
+  border-radius:28px;
+  min-height:420px;
+
+  border:1px solid var(--border);
+
+  background:#000;
+
+  box-shadow:0 15px 40px rgba(0,0,0,.35);
+
+  transition:transform .4s ease;
+}
+
+.image-card:hover{
+  transform:translateY(-6px);
+}
+
+.image-card img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+
+  transition:transform .7s ease;
+}
+
+.image-card:hover img{
+  transform:scale(1.05);
+}
+
+.image-overlay{
+  position:absolute;
+  inset:0;
+
+  background:
+    linear-gradient(
+      to top,
+      rgba(0,0,0,.9),
+      rgba(0,0,0,.15)
+    );
+}
+
+.image-content{
+  position:absolute;
+  bottom:0;
+  left:0;
+  right:0;
+
+  padding:2rem;
+  z-index:2;
+}
+
+.image-tag{
+  display:inline-block;
+  margin-bottom:.8rem;
+
+  color:var(--accent);
+  font-size:.8rem;
+  text-transform:uppercase;
+  letter-spacing:1px;
+}
+
+.image-content strong{
+  display:block;
+  font-size:1.8rem;
+  margin-bottom:.7rem;
+}
+
+.image-content p{
+  color:#dddddd;
+}
+
+/* CARDS */
+
+.quote-card,
+.info-card{
+  background:var(--card);
+
+  border:1px solid var(--border);
+
+  border-radius:28px;
+
+  padding:2rem;
+
+  box-shadow:0 10px 30px rgba(0,0,0,.25);
+}
+
+.quote-card{
+  position:relative;
+
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+
+  min-height:320px;
+}
+
+.quote-mark{
+  font-size:5rem;
+  color:var(--accent);
+  line-height:1;
+  opacity:.5;
+}
+
+.quote-card p{
+  font-size:1.2rem;
+  margin:1rem 0 2rem;
+}
+
+.quote-line{
+  width:60px;
+  height:2px;
+  background:var(--accent);
+  margin-bottom:1rem;
+}
+
+.quote-card small{
+  color:#bbbbbb;
+  letter-spacing:1px;
+}
+
+.info-card h3{
+  font-size:1.8rem;
+  margin-bottom:1rem;
+  color:var(--accent);
+}
+
+.info-card p{
+  margin-bottom:1.5rem;
+}
+
+/* LISTS */
+
+.styled-list{
+  list-style:none;
+}
+
+.styled-list li{
+  position:relative;
+  padding-left:1.5rem;
+  margin-bottom:.8rem;
+  color:var(--muted);
+}
+
+.styled-list li::before{
+  content:"✦";
+  position:absolute;
+  left:0;
+  color:var(--accent);
+}
+
+/* BANNER */
+
+.banner-section{
+  padding:0 8% 7rem;
+}
+
+.banner-card{
+  position:relative;
+  overflow:hidden;
+  border-radius:32px;
+  min-height:500px;
+
+  border:1px solid var(--border);
+
+  box-shadow:0 15px 45px rgba(0,0,0,.35);
+}
+
+.banner-card img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  position:absolute;
+  inset:0;
+}
+
+.banner-card::after{
+  content:"";
+  position:absolute;
+  inset:0;
+
+  background:
+    linear-gradient(
+      to right,
+      rgba(0,0,0,.88),
+      rgba(0,0,0,.45)
+    );
+}
+
+.banner-content{
+  position:relative;
+  z-index:2;
+
+  max-width:700px;
+
+  padding:5rem;
+}
+
+.banner-content span{
+  color:var(--accent);
+  text-transform:uppercase;
+  letter-spacing:1px;
+  font-size:.85rem;
+}
+
+.banner-content h2{
+  font-size:3rem;
+  margin:1rem 0 1.5rem;
+}
+
+.banner-content p{
+  color:#dddddd;
+  font-size:1.1rem;
+}
+
+/* RESPONSIVE */
+
+@media (max-width:768px){
+
+  .content-section{
+    padding:4rem 6%;
+  }
+
+  .hero{
+    min-height:65vh;
+  }
+
+  .section-header h2{
+    font-size:2rem;
+  }
+
+  .banner-content{
+    padding:3rem 2rem;
+  }
+
+  .banner-content h2{
+    font-size:2rem;
+  }
+
+  .image-content strong{
+    font-size:1.4rem;
+  }
+
+}
+
+</style>
