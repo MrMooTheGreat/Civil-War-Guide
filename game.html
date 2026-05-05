@@ -2,27 +2,27 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Civil War Camp Survival</title>
+<title>Civil War Field Survival</title>
 
 <style>
 body{
   margin:0;
-  font-family:Georgia, serif;
+  font-family: Georgia, serif;
   background:#111;
-  color:#f3f3f3;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
+  color:#eee;
 }
 
 .game{
-  width:90%;
   max-width:800px;
-  background:#1c1c1c;
-  border-radius:16px;
-  padding:2rem;
-  border:1px solid rgba(255,255,255,0.1);
+  margin:50px auto;
+  padding:20px;
+}
+
+.card{
+  background:#1b1b1b;
+  border:1px solid #333;
+  padding:25px;
+  border-radius:12px;
 }
 
 h1{
@@ -31,207 +31,216 @@ h1{
 }
 
 .stats{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:10px;
-  margin:20px 0;
-}
-
-.stat{
-  background:#222;
-  padding:10px;
-  border-radius:10px;
-  text-align:center;
-}
-
-.bar{
-  height:10px;
-  background:#333;
-  border-radius:5px;
-  margin-top:5px;
-  overflow:hidden;
-}
-
-.fill{
-  height:100%;
-  width:50%;
-  background:#c7a26a;
-}
-
-.actions{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:10px;
+  display:flex;
+  justify-content:space-between;
+  margin:15px 0;
+  font-size:14px;
+  color:#ccc;
 }
 
 button{
+  display:block;
+  width:100%;
+  margin:10px 0;
   padding:12px;
-  background:#2a2a2a;
-  border:1px solid rgba(255,255,255,0.1);
-  color:white;
-  border-radius:10px;
+  background:#222;
+  border:1px solid #444;
+  color:#eee;
   cursor:pointer;
-  transition:.2s;
+  border-radius:8px;
+  transition:0.2s;
 }
 
 button:hover{
-  background:#c7a26a;
-  color:black;
+  background:#2a2a2a;
+  border-color:#c7a26a;
 }
 
-#log{
-  margin-top:15px;
-  padding:10px;
-  background:#151515;
-  border-radius:10px;
-  height:80px;
-  overflow:auto;
-  font-size:.9rem;
-  color:#ccc;
+.small{
+  font-size:13px;
+  color:#aaa;
 }
 </style>
+
 </head>
 
 <body>
 
 <div class="game">
 
-<h1>Civil War Camp Survival</h1>
-<p>Survive 7 days in camp. Manage your soldier wisely.</p>
+  <div class="card">
 
-<div class="stats">
+    <h1 id="title">Camp Life Begins</h1>
 
-  <div class="stat">
-    Hunger
-    <div class="bar"><div id="hunger" class="fill"></div></div>
+    <div class="stats">
+      <div>❤️ Health: <span id="health">100</span></div>
+      <div>🎖 Morale: <span id="morale">100</span></div>
+      <div>📍 Day: <span id="day">1</span></div>
+    </div>
+
+    <p id="story">
+      You are a new recruit arriving at a Civil War encampment.
+      The air is heavy, tents stretch across the field, and orders echo in the distance.
+    </p>
+
+    <div id="choices"></div>
+
+    <p class="small" id="hint">
+      Your choices will affect survival and morale.
+    </p>
+
   </div>
-
-  <div class="stat">
-    Health
-    <div class="bar"><div id="health" class="fill"></div></div>
-  </div>
-
-  <div class="stat">
-    Fatigue
-    <div class="bar"><div id="fatigue" class="fill"></div></div>
-  </div>
-
-  <div class="stat">
-    Morale
-    <div class="bar"><div id="morale" class="fill"></div></div>
-  </div>
-
-</div>
-
-<div class="actions">
-
-<button onclick="action('eat')">Eat Rations</button>
-<button onclick="action('rest')">Rest</button>
-<button onclick="action('drill')">Drill Training</button>
-<button onclick="action('work')">Camp Duty</button>
-
-</div>
-
-<div id="log"></div>
 
 </div>
 
 <script>
 
-let stats = {
-  hunger: 60,
-  health: 70,
-  fatigue: 40,
-  morale: 60,
-  day: 1
-};
+let health = 100;
+let morale = 100;
+let day = 1;
 
-function updateUI(){
+const title = document.getElementById("title");
+const story = document.getElementById("story");
+const choices = document.getElementById("choices");
 
-  document.getElementById("hunger").style.width = stats.hunger + "%";
-  document.getElementById("health").style.width = stats.health + "%";
-  document.getElementById("fatigue").style.width = stats.fatigue + "%";
-  document.getElementById("morale").style.width = stats.morale + "%";
+const healthEl = document.getElementById("health");
+const moraleEl = document.getElementById("morale");
+const dayEl = document.getElementById("day");
 
-  checkGameOver();
+function updateStats(){
+  healthEl.innerText = health;
+  moraleEl.innerText = morale;
+  dayEl.innerText = day;
 }
 
-function log(msg){
-  let box = document.getElementById("log");
-  box.innerHTML = msg + "<br>" + box.innerHTML;
+function endCheck(){
+  if(health <= 0){
+    story.innerText = "You succumbed to illness and exhaustion in camp. Your service ends here.";
+    choices.innerHTML = "";
+    return true;
+  }
+  if(morale <= 0){
+    story.innerText = "You desert the army, unable to continue under the strain of war.";
+    choices.innerHTML = "";
+    return true;
+  }
+  return false;
 }
 
 function nextDay(){
-  stats.day++;
-
-  stats.hunger -= 10;
-  stats.fatigue += 10;
-
-  if(stats.hunger < 40) stats.health -= 5;
-  if(stats.fatigue > 70) stats.morale -= 5;
-
-  log("Day " + stats.day + " begins in camp...");
+  day++;
+  health -= 5;
+  morale -= 3;
 }
 
-function action(type){
+function renderCamp(){
+  title.innerText = "Camp Life";
 
-  if(stats.day > 7){
-    log("Training complete.");
-    return;
-  }
+  story.innerText =
+    "You are in camp. The day is slow but demanding. Orders may come at any time.";
 
-  if(type === "eat"){
-    stats.hunger += 25;
-    stats.morale += 5;
-    log("You eat hardtack and drink water.");
-  }
+  choices.innerHTML = "";
 
-  if(type === "rest"){
-    stats.fatigue -= 25;
-    stats.health += 5;
-    log("You rest in your tent.");
-  }
-
-  if(type === "drill"){
-    stats.fatigue += 15;
-    stats.morale += 10;
-    log("You drill with your unit.");
-  }
-
-  if(type === "work"){
-    stats.fatigue += 10;
-    stats.hunger -= 5;
-    log("You perform camp duties.");
-  }
-
-  // clamp
-  for(let k in stats){
-    if(k !== "day"){
-      stats[k] = Math.max(0, Math.min(100, stats[k]));
-    }
-  }
-
-  updateUI();
-
-  if(Math.random() < 0.5){
+  addChoice("Clean your rifle", ()=>{
+    morale += 5;
+    health -= 2;
     nextDay();
-  }
+    renderMarch();
+  });
+
+  addChoice("Rest in your tent", ()=>{
+    health += 8;
+    morale -= 5;
+    nextDay();
+    renderMarch();
+  });
+
+  addChoice("Write a letter home", ()=>{
+    morale += 10;
+    nextDay();
+    renderMarch();
+  });
 }
 
-function checkGameOver(){
+function renderMarch(){
 
-  if(stats.health <= 0){
-    log("You fell ill in camp. Game over.");
-  }
+  if(endCheck()) return;
 
-  if(stats.day > 7){
-    log("You survived the week in camp. Training complete.");
-  }
+  title.innerText = "Forced March";
+
+  story.innerText =
+    "Your unit is ordered to march for miles across rough terrain.";
+
+  choices.innerHTML = "";
+
+  addChoice("Keep pace with the unit", ()=>{
+    health -= 10;
+    morale += 2;
+    nextDay();
+    renderBattleChance();
+  });
+
+  addChoice("Fall behind to rest briefly", ()=>{
+    health -= 5;
+    morale -= 5;
+    nextDay();
+    renderBattleChance();
+  });
+
+  addChoice("Help another exhausted soldier", ()=>{
+    health -= 8;
+    morale += 8;
+    nextDay();
+    renderBattleChance();
+  });
 }
 
-updateUI();
+function renderBattleChance(){
 
-log("You arrive at camp. Survive 7 days.");
+  if(endCheck()) return;
+
+  title.innerText = "Sudden Engagement";
+
+  story.innerText =
+    "Gunfire erupts nearby. Your unit is drawn into sudden combat.";
+
+  choices.innerHTML = "";
+
+  addChoice("Hold the line and fire", ()=>{
+    health -= 15;
+    morale += 10;
+    nextDay();
+    renderCamp();
+  });
+
+  addChoice("Take cover and wait", ()=>{
+    health -= 8;
+    morale -= 5;
+    nextDay();
+    renderCamp();
+  });
+
+  addChoice("Retreat slightly to regroup", ()=>{
+    health -= 5;
+    morale -= 10;
+    nextDay();
+    renderCamp();
+  });
+}
+
+function addChoice(text, action){
+  const btn = document.createElement("button");
+  btn.innerText = text;
+  btn.onclick = ()=>{
+    action();
+    updateStats();
+  };
+  choices.appendChild(btn);
+}
+
+// start game
+updateStats();
+renderCamp();
 
 </script>
 
