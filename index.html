@@ -10,18 +10,18 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Cormorant+Garamond:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Special+Elite&family=Cormorant+Garamond:wght@400;500;700&display=swap" rel="stylesheet">
 
   <style>
 
     :root{
-      --paper:#d7c2a3;
-      --paper-dark:#c0aa88;
-      --ink:#24170f;
-      --brown:#4a3322;
-      --wood:#5f4330;
-      --gold:#8e6a3e;
-      --shadow:rgba(0,0,0,.35);
+      --paper:#ccb28c;
+      --paper-dark:#b29268;
+      --ink:#1d130d;
+      --brown:#3b2618;
+      --wood:#4a3120;
+      --gold:#7b5a34;
+      --burn:#24150d;
     }
 
     *{
@@ -36,17 +36,20 @@
 
     body{
       background:
-        linear-gradient(rgba(32,20,12,.82), rgba(24,16,10,.88)),
+        linear-gradient(rgba(18,10,6,.9), rgba(12,7,4,.92)),
         url("https://images.unsplash.com/photo-1518562180175-34a163b1a9a6?q=80&w=1800&auto=format&fit=crop")
         center/cover fixed;
 
-      font-family:"Cormorant Garamond", serif;
       color:var(--ink);
+
+      font-family:"Cormorant Garamond", serif;
+
       line-height:1.8;
+
       overflow-x:hidden;
     }
 
-    /* AGED PAPER TEXTURE */
+    /* HEAVY PAPER + DIRT TEXTURE */
 
     body::before{
       content:"";
@@ -56,15 +59,35 @@
       background:
         url("https://www.transparenttextures.com/patterns/old-paper.png");
 
-      opacity:.32;
+      opacity:.45;
+
       pointer-events:none;
+      z-index:-2;
+    }
+
+    body::after{
+      content:"";
+      position:fixed;
+      inset:0;
+
+      background:
+        radial-gradient(circle at top left, rgba(0,0,0,.35), transparent 35%),
+        radial-gradient(circle at bottom right, rgba(0,0,0,.45), transparent 40%),
+        url("https://www.transparenttextures.com/patterns/grunge-wall.png");
+
+      mix-blend-mode:multiply;
+
+      opacity:.35;
+
+      pointer-events:none;
+
       z-index:-1;
     }
 
     /* HEADER */
 
     header{
-      min-height:95vh;
+      min-height:100vh;
 
       display:flex;
       flex-direction:column;
@@ -78,20 +101,28 @@
       position:relative;
 
       background:
-        linear-gradient(rgba(15,10,7,.75), rgba(15,10,7,.85)),
+        linear-gradient(rgba(10,5,2,.78), rgba(10,5,2,.88)),
         url("https://images.unsplash.com/photo-1508615039623-a25605d2b022?q=80&w=1800&auto=format&fit=crop")
         center/cover no-repeat;
 
-      border-bottom:6px double rgba(215,194,163,.35);
+      border-bottom:8px double rgba(215,194,163,.25);
+
+      box-shadow:
+        inset 0 -80px 120px rgba(0,0,0,.75);
     }
 
-    header::after{
+    /* BURNT EDGES */
+
+    header::before{
       content:"";
       position:absolute;
       inset:0;
 
-      background:
-        radial-gradient(circle at center, transparent 10%, rgba(0,0,0,.45) 100%);
+      box-shadow:
+        inset 0 0 120px rgba(0,0,0,.95),
+        inset 0 0 250px rgba(0,0,0,.7);
+
+      pointer-events:none;
     }
 
     header h1{
@@ -100,38 +131,45 @@
 
       font-family:"Cinzel", serif;
 
-      font-size:clamp(3rem, 7vw, 6.5rem);
+      font-size:clamp(3rem, 7vw, 7rem);
 
       text-transform:uppercase;
 
-      max-width:1100px;
+      max-width:1200px;
 
-      color:#efe2c8;
+      line-height:1.05;
 
-      line-height:1.1;
+      letter-spacing:4px;
 
-      letter-spacing:3px;
+      color:#efe1c4;
 
-      margin-bottom:1.5rem;
+      margin-bottom:2rem;
 
       text-shadow:
         0 2px 0 #000,
-        0 6px 18px rgba(0,0,0,.7);
+        0 4px 0 #000,
+        0 10px 25px rgba(0,0,0,.8);
+
+      transform:rotate(-1deg);
     }
 
     header p{
       position:relative;
       z-index:2;
 
-      max-width:760px;
+      max-width:780px;
 
-      color:#d8c4a2;
+      font-size:1.5rem;
 
-      font-size:1.45rem;
+      color:#dbc5a0;
+
+      font-style:italic;
 
       letter-spacing:.5px;
 
-      font-style:italic;
+      font-family:"Special Elite", cursive;
+
+      opacity:.9;
     }
 
     /* NAVIGATION */
@@ -149,76 +187,95 @@
       padding:1rem;
 
       background:
-        linear-gradient(to bottom, #4d3524, #382419);
+        linear-gradient(to bottom, #533825, #2f1d12);
 
-      border-top:2px solid rgba(255,255,255,.08);
-      border-bottom:4px double rgba(215,194,163,.25);
+      border-top:2px solid rgba(255,255,255,.05);
+      border-bottom:5px double rgba(214,192,160,.18);
 
       box-shadow:
-        0 5px 15px rgba(0,0,0,.4);
+        0 8px 20px rgba(0,0,0,.55);
     }
 
     nav a{
-      color:#ead9bb;
+      color:#e6d4b5;
 
       text-decoration:none;
 
-      padding:.7rem 1.2rem;
+      padding:.7rem 1rem;
 
-      font-size:.95rem;
-
-      letter-spacing:1px;
+      font-size:.9rem;
 
       text-transform:uppercase;
+
+      letter-spacing:2px;
+
+      font-family:"Cinzel", serif;
 
       border:1px solid transparent;
 
       transition:.25s ease;
-
-      font-family:"Cinzel", serif;
     }
 
     nav a:hover{
       background:rgba(255,255,255,.06);
 
-      border-color:rgba(255,255,255,.15);
+      border-color:rgba(255,255,255,.12);
 
-      color:#fff7ea;
+      transform:translateY(-2px);
+
+      color:#fff4dc;
     }
 
     /* MAIN */
 
     main{
-      padding:6rem 8%;
+      padding:7rem 8%;
     }
 
     section{
+      position:relative;
+
       background:
         linear-gradient(
           to bottom,
-          rgba(215,194,163,.97),
-          rgba(198,174,141,.97)
+          rgba(208,182,143,.97),
+          rgba(181,150,110,.97)
         );
 
-      border:2px solid rgba(58,39,24,.55);
-
-      box-shadow:
-        0 12px 30px rgba(0,0,0,.45),
-        inset 0 0 60px rgba(90,60,35,.18);
+      border:3px solid #5b3a24;
 
       padding:4rem;
 
-      position:relative;
+      box-shadow:
+        0 20px 45px rgba(0,0,0,.55),
+        inset 0 0 80px rgba(88,56,30,.25);
 
       overflow:hidden;
     }
+
+    /* WORN PAPER EDGES */
 
     section::before{
       content:"";
       position:absolute;
       inset:12px;
 
-      border:1px solid rgba(58,39,24,.35);
+      border:1px solid rgba(50,30,18,.45);
+
+      pointer-events:none;
+    }
+
+    section::after{
+      content:"";
+      position:absolute;
+      inset:0;
+
+      background:
+        url("https://www.transparenttextures.com/patterns/stardust.png");
+
+      opacity:.15;
+
+      mix-blend-mode:multiply;
 
       pointer-events:none;
     }
@@ -233,23 +290,32 @@
     h2{
       font-family:"Cinzel", serif;
 
-      font-size:3rem;
+      font-size:3.2rem;
+
+      color:#2c1a10;
 
       margin-bottom:1.5rem;
-
-      color:#3a2417;
 
       text-transform:uppercase;
 
-      letter-spacing:1px;
+      letter-spacing:2px;
+
+      text-shadow:
+        1px 1px 0 rgba(255,255,255,.15);
     }
 
     p{
-      font-size:1.35rem;
+      font-size:1.4rem;
 
-      color:#2a1c13;
+      color:#24160f;
 
       margin-bottom:1.5rem;
+    }
+
+    /* TYPEWRITER LOOK */
+
+    .typewritten{
+      font-family:"Special Elite", cursive;
     }
 
     /* BUTTON */
@@ -262,51 +328,47 @@
       padding:1rem 2rem;
 
       background:
-        linear-gradient(to bottom, #7a5638, #5a3d29);
+        linear-gradient(to bottom, #6d4a2f, #4a311f);
 
-      color:#f4ead7;
+      color:#f3e5cb;
 
       text-decoration:none;
 
-      font-weight:bold;
-
       text-transform:uppercase;
 
-      letter-spacing:1px;
-
-      border:2px solid rgba(0,0,0,.25);
-
-      box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.12),
-        0 4px 10px rgba(0,0,0,.35);
-
-      transition:.25s ease;
+      letter-spacing:2px;
 
       font-family:"Cinzel", serif;
+
+      border:2px solid rgba(0,0,0,.35);
+
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.08),
+        0 6px 14px rgba(0,0,0,.45);
+
+      transition:.25s ease;
     }
 
     .button:hover{
       transform:translateY(-3px);
 
       background:
-        linear-gradient(to bottom, #8b6545, #68462f);
+        linear-gradient(to bottom, #7e593a, #5a3c27);
     }
 
-    /* IMAGE CARD */
+    /* IMAGE */
 
     .image-card{
-      position:relative;
+      background:#2a1a10;
 
-      background:#2b1d14;
+      padding:16px;
 
-      padding:14px;
-
-      border:4px solid #4a3322;
+      border:5px solid #4a3120;
 
       box-shadow:
-        0 15px 30px rgba(0,0,0,.45);
+        0 18px 35px rgba(0,0,0,.6);
 
-      transform:rotate(-1.5deg);
+      transform:rotate(-2deg);
 
       transition:.35s ease;
     }
@@ -319,17 +381,18 @@
       width:100%;
       display:block;
 
-      border:3px solid #c6ae8d;
+      border:4px solid #c9af88;
 
       filter:
-        sepia(.65)
-        contrast(1.05)
-        brightness(.9)
-        grayscale(.15);
+        sepia(.85)
+        contrast(1.08)
+        brightness(.82)
+        grayscale(.2);
     }
 
     .image-content{
-      padding:1.5rem .5rem .3rem;
+      padding:1.5rem .5rem .2rem;
+
       text-align:center;
     }
 
@@ -338,23 +401,25 @@
 
       font-family:"Cinzel", serif;
 
-      font-size:1.7rem;
+      font-size:1.8rem;
 
-      color:#f1e4cb;
+      color:#f1e1c4;
 
-      margin-bottom:.5rem;
+      margin-bottom:.4rem;
 
       letter-spacing:1px;
     }
 
     .image-content p{
+      color:#d7c09f;
+
+      font-size:1rem;
+
       margin:0;
 
-      color:#d7c1a0;
-
-      font-size:1.1rem;
-
       font-style:italic;
+
+      font-family:"Special Elite", cursive;
     }
 
     /* FOOTER */
@@ -364,15 +429,15 @@
 
       padding:2rem;
 
-      background:#1f140e;
+      background:#170d08;
 
-      color:#c7b191;
+      color:#c5ae88;
 
-      border-top:4px double rgba(215,194,163,.25);
+      border-top:6px double rgba(215,194,163,.2);
 
-      letter-spacing:1px;
+      letter-spacing:2px;
 
-      font-size:1rem;
+      font-family:"Special Elite", cursive;
     }
 
     /* RESPONSIVE */
@@ -380,15 +445,15 @@
     @media (max-width:768px){
 
       header{
-        min-height:78vh;
+        min-height:80vh;
       }
 
       header h1{
-        font-size:3.4rem;
+        font-size:3.6rem;
       }
 
       header p{
-        font-size:1.15rem;
+        font-size:1.1rem;
       }
 
       main{
@@ -400,19 +465,15 @@
       }
 
       h2{
-        font-size:2.2rem;
+        font-size:2.3rem;
       }
 
       p{
         font-size:1.15rem;
       }
 
-      nav{
-        gap:.2rem;
-      }
-
       nav a{
-        font-size:.75rem;
+        font-size:.72rem;
         padding:.55rem .7rem;
       }
 
@@ -453,13 +514,13 @@
 
       <h2>Welcome Recruit</h2>
 
-      <p>
+      <p class="typewritten">
         You have traded civilian life for military service.
         Most of your days will be spent marching, drilling,
         waiting, and surviving difficult camp conditions.
       </p>
 
-      <p>
+      <p class="typewritten">
         Explore each section to learn about training,
         uniforms, disease, battle, and daily life.
       </p>
