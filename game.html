@@ -1,247 +1,158 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Civil War Field Survival</title>
-
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Civil War Strategy Game</title>
 <style>
-body{
-  margin:0;
-  font-family: Georgia, serif;
-  background:#111;
-  color:#eee;
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #1c1c1c;
+  color: #fff;
 }
-
-.game{
-  max-width:800px;
-  margin:50px auto;
-  padding:20px;
+header {
+  display: flex;
+  justify-content: space-around;
+  padding: 10px;
+  background: #333;
 }
-
-.card{
-  background:#1b1b1b;
-  border:1px solid #333;
-  padding:25px;
-  border-radius:12px;
+.bar {
+  padding: 5px 10px;
+  background: #444;
+  border-radius: 5px;
 }
-
-h1{
-  color:#c7a26a;
-  margin-bottom:10px;
+#map {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 5px;
+  padding: 20px;
 }
-
-.stats{
-  display:flex;
-  justify-content:space-between;
-  margin:15px 0;
-  font-size:14px;
-  color:#ccc;
+.state {
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  border: 1px solid #555;
+  user-select: none;
 }
-
-button{
-  display:block;
-  width:100%;
-  margin:10px 0;
-  padding:12px;
-  background:#222;
-  border:1px solid #444;
-  color:#eee;
-  cursor:pointer;
-  border-radius:8px;
-  transition:0.2s;
+.union { background: #2b4cff; }
+.confed { background: #b22222; }
+.neutral { background: #555; }
+#event {
+  padding: 10px;
+  background: #222;
+  min-height: 40px;
 }
-
-button:hover{
-  background:#2a2a2a;
-  border-color:#c7a26a;
-}
-
-.small{
-  font-size:13px;
-  color:#aaa;
+button {
+  padding: 10px;
+  margin: 10px;
+  cursor: pointer;
 }
 </style>
-
 </head>
-
 <body>
 
-<div class="game">
+<header>
+  <div class="bar">🪖 Army: <span id="army">100</span></div>
+  <div class="bar">🛠️ Supplies: <span id="supplies">100</span></div>
+  <div class="bar">❤️ Morale: <span id="morale">100</span></div>
+  <div class="bar">🚂 Rail: <span id="rail">100</span></div>
+</header>
 
-  <div class="card">
+<div id="map"></div>
 
-    <h1 id="title">Camp Life Begins</h1>
-
-    <div class="stats">
-      <div>❤️ Health: <span id="health">100</span></div>
-      <div>🎖 Morale: <span id="morale">100</span></div>
-      <div>📍 Day: <span id="day">1</span></div>
-    </div>
-
-    <p id="story">
-      You are a new recruit arriving at a Civil War encampment.
-      The air is heavy, tents stretch across the field, and orders echo in the distance.
-    </p>
-
-    <div id="choices"></div>
-
-    <p class="small" id="hint">
-      Your choices will affect survival and morale.
-    </p>
-
-  </div>
-
+<div style="text-align:center;">
+  <button onclick="endTurn()">End Turn</button>
 </div>
 
+<div id="event">Event Log: Game Start</div>
+
 <script>
+const states = [
+  "Virginia","Ohio","Georgia","Texas","Florida",
+  "Alabama","Kentucky","Tennessee","Carolinas","Mississippi"
+];
 
-let health = 100;
-let morale = 100;
-let day = 1;
+let stateData = {};
+let player = "union";
 
-const title = document.getElementById("title");
-const story = document.getElementById("story");
-const choices = document.getElementById("choices");
+states.forEach(s => stateData[s] = "neutral");
 
-const healthEl = document.getElementById("health");
-const moraleEl = document.getElementById("morale");
-const dayEl = document.getElementById("day");
+stateData["Ohio"] = "union";
+stateData["Virginia"] = "confed";
 
-function updateStats(){
-  healthEl.innerText = health;
-  moraleEl.innerText = morale;
-  dayEl.innerText = day;
+function getStat(id) {
+  return parseInt(document.getElementById(id).innerText);
 }
 
-function endCheck(){
-  if(health <= 0){
-    story.innerText = "You succumbed to illness and exhaustion in camp. Your service ends here.";
-    choices.innerHTML = "";
-    return true;
+function setStat(id, value) {
+  value = Math.max(0, Math.min(200, value));
+  document.getElementById(id).innerText = value;
+}
+
+function renderMap() {
+  const map = document.getElementById("map");
+  map.innerHTML = "";
+
+  states.forEach(state => {
+    const div = document.createElement("div");
+    div.classList.add("state");
+    div.classList.add(stateData[state]);
+    div.innerText = state;
+
+    div.onclick = () => handleStateClick(state);
+    map.appendChild(div);
+  });
+}
+
+function handleStateClick(state) {
+  if (stateData[state] === player) {
+    document.getElementById("event").innerText = "You already control " + state;
+    return;
   }
-  if(morale <= 0){
-    story.innerText = "You desert the army, unable to continue under the strain of war.";
-    choices.innerHTML = "";
-    return true;
+
+  const army = getStat("army");
+  const morale = getStat("morale");
+
+  const attackPower = army * (0.5 + morale / 200);
+  const defensePower = 50 + Math.random() * 50;
+
+  let win = attackPower > defensePower;
+
+  if (win) {
+    stateData[state] = player;
+    setStat("army", army - 10);
+    document.getElementById("event").innerText = "Victory at " + state;
+  } else {
+    setStat("morale", morale - 10);
+    document.getElementById("event").innerText = "Defeat at " + state;
   }
-  return false;
+
+  renderMap();
 }
 
-function nextDay(){
-  day++;
-  health -= 5;
-  morale -= 3;
+function randomEvent() {
+  const events = [
+    "Disease outbreak reduces morale",
+    "Supply shipment arrived",
+    "Railroads damaged in storm"
+  ];
+  return events[Math.floor(Math.random() * events.length)];
 }
 
-function renderCamp(){
-  title.innerText = "Camp Life";
+function endTurn() {
+  const supplies = getStat("supplies");
+  const morale = getStat("morale");
 
-  story.innerText =
-    "You are in camp. The day is slow but demanding. Orders may come at any time.";
+  setStat("supplies", supplies - 5);
+  setStat("morale", morale - 2);
 
-  choices.innerHTML = "";
+  document.getElementById("event").innerText = "Event: " + randomEvent();
 
-  addChoice("Clean your rifle", ()=>{
-    morale += 5;
-    health -= 2;
-    nextDay();
-    renderMarch();
-  });
-
-  addChoice("Rest in your tent", ()=>{
-    health += 8;
-    morale -= 5;
-    nextDay();
-    renderMarch();
-  });
-
-  addChoice("Write a letter home", ()=>{
-    morale += 10;
-    nextDay();
-    renderMarch();
-  });
+  renderMap();
 }
 
-function renderMarch(){
-
-  if(endCheck()) return;
-
-  title.innerText = "Forced March";
-
-  story.innerText =
-    "Your unit is ordered to march for miles across rough terrain.";
-
-  choices.innerHTML = "";
-
-  addChoice("Keep pace with the unit", ()=>{
-    health -= 10;
-    morale += 2;
-    nextDay();
-    renderBattleChance();
-  });
-
-  addChoice("Fall behind to rest briefly", ()=>{
-    health -= 5;
-    morale -= 5;
-    nextDay();
-    renderBattleChance();
-  });
-
-  addChoice("Help another exhausted soldier", ()=>{
-    health -= 8;
-    morale += 8;
-    nextDay();
-    renderBattleChance();
-  });
-}
-
-function renderBattleChance(){
-
-  if(endCheck()) return;
-
-  title.innerText = "Sudden Engagement";
-
-  story.innerText =
-    "Gunfire erupts nearby. Your unit is drawn into sudden combat.";
-
-  choices.innerHTML = "";
-
-  addChoice("Hold the line and fire", ()=>{
-    health -= 15;
-    morale += 10;
-    nextDay();
-    renderCamp();
-  });
-
-  addChoice("Take cover and wait", ()=>{
-    health -= 8;
-    morale -= 5;
-    nextDay();
-    renderCamp();
-  });
-
-  addChoice("Retreat slightly to regroup", ()=>{
-    health -= 5;
-    morale -= 10;
-    nextDay();
-    renderCamp();
-  });
-}
-
-function addChoice(text, action){
-  const btn = document.createElement("button");
-  btn.innerText = text;
-  btn.onclick = ()=>{
-    action();
-    updateStats();
-  };
-  choices.appendChild(btn);
-}
-
-// start game
-updateStats();
-renderCamp();
-
+renderMap();
 </script>
 
 </body>
