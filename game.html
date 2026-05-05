@@ -1,27 +1,4 @@
-# Fixed Civil War Strategy Game (Working Version)
 
-## Preview Instructions
-
-This version is fully previewable.
-
-1. Create a file named `index.html`
-2. Paste the FULL code into it
-3. Open the file in Chrome
-
-OR
-
-Paste it into:
-
-* CodePen
-* Replit
-* Glitch
-* VS Code Live Server
-
-The code below already includes everything needed for previewing.
-
-The malfunction happened because the new systems were being added on top of the old functions, causing duplicate function conflicts and recursive redraw problems.
-
-Use the code below to REPLACE the ENTIRE `<script>` section of your original game.
 
 ```html
 <!DOCTYPE html>
@@ -401,9 +378,3 @@ drawMap();
 </body>
 </html>
 ```
-
-Most important fix:
-
-* DO NOT keep the old `attack()` or `confedAI()` functions.
-* Replace the ENTIRE old `<script>` section.
-* The previous malfunction happened because duplicate functions existed simultaneously.
