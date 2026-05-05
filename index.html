@@ -1,485 +1,478 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-  <title>Civil War Guide</title>
+<title>Civil War Guide</title>
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- FONTS -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Special+Elite&family=Cormorant+Garamond:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=Special+Elite&display=swap" rel="stylesheet">
 
-  <style>
+<style>
 
-    :root{
-      --paper:#ccb28c;
-      --paper-dark:#b29268;
-      --ink:#1d130d;
-      --brown:#3b2618;
-      --wood:#4a3120;
-      --gold:#7b5a34;
-      --burn:#24150d;
-    }
+:root{
+  --paper:#b9986d;
+  --paper-dark:#9b7b52;
+  --ink:#1b120b;
+  --burn:#140c07;
+  --wood:#3c2718;
+  --gold:#71502d;
+}
 
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-    }
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
 
-    html{
-      scroll-behavior:smooth;
-    }
+html{
+  scroll-behavior:smooth;
+}
 
-    body{
-      background:
-        linear-gradient(rgba(18,10,6,.9), rgba(12,7,4,.92)),
-        url("https://images.unsplash.com/photo-1518562180175-34a163b1a9a6?q=80&w=1800&auto=format&fit=crop")
-        center/cover fixed;
+body{
+  background:
+    linear-gradient(rgba(14,8,4,.92), rgba(10,6,3,.95)),
+    url("https://images.unsplash.com/photo-1518562180175-34a163b1a9a6?q=80&w=1800&auto=format&fit=crop")
+    center/cover fixed;
 
-      color:var(--ink);
+  color:var(--ink);
 
-      font-family:"Cormorant Garamond", serif;
+  font-family:"Special Elite", cursive;
 
-      line-height:1.8;
+  overflow-x:hidden;
 
-      overflow-x:hidden;
-    }
+  line-height:1.8;
+}
 
-    /* HEAVY PAPER + DIRT TEXTURE */
+/* EXTREME AGED TEXTURE */
 
-    body::before{
-      content:"";
-      position:fixed;
-      inset:0;
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
 
-      background:
-        url("https://www.transparenttextures.com/patterns/old-paper.png");
+  background:
+    url("https://www.transparenttextures.com/patterns/old-paper.png");
 
-      opacity:.45;
+  opacity:.55;
 
-      pointer-events:none;
-      z-index:-2;
-    }
+  pointer-events:none;
 
-    body::after{
-      content:"";
-      position:fixed;
-      inset:0;
+  z-index:-2;
+}
 
-      background:
-        radial-gradient(circle at top left, rgba(0,0,0,.35), transparent 35%),
-        radial-gradient(circle at bottom right, rgba(0,0,0,.45), transparent 40%),
-        url("https://www.transparenttextures.com/patterns/grunge-wall.png");
+body::after{
+  content:"";
+  position:fixed;
+  inset:0;
 
-      mix-blend-mode:multiply;
+  background:
+    radial-gradient(circle at top left, rgba(0,0,0,.6), transparent 30%),
+    radial-gradient(circle at bottom right, rgba(0,0,0,.65), transparent 35%),
+    radial-gradient(circle at center, transparent 55%, rgba(0,0,0,.35) 100%),
+    url("https://www.transparenttextures.com/patterns/grunge-wall.png");
 
-      opacity:.35;
+  mix-blend-mode:multiply;
 
-      pointer-events:none;
+  opacity:.55;
 
-      z-index:-1;
-    }
+  pointer-events:none;
 
-    /* HEADER */
+  z-index:-1;
+}
 
-    header{
-      min-height:100vh;
+/* HEADER */
 
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      align-items:center;
+header{
+  min-height:100vh;
 
-      text-align:center;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
 
-      padding:5rem 2rem;
+  text-align:center;
 
-      position:relative;
+  padding:5rem 2rem;
 
-      background:
-        linear-gradient(rgba(10,5,2,.78), rgba(10,5,2,.88)),
-        url("https://images.unsplash.com/photo-1508615039623-a25605d2b022?q=80&w=1800&auto=format&fit=crop")
-        center/cover no-repeat;
+  position:relative;
 
-      border-bottom:8px double rgba(215,194,163,.25);
+  background:
+    linear-gradient(rgba(8,5,3,.78), rgba(8,5,3,.92)),
+    url("https://images.unsplash.com/photo-1508615039623-a25605d2b022?q=80&w=1800&auto=format&fit=crop")
+    center/cover no-repeat;
 
-      box-shadow:
-        inset 0 -80px 120px rgba(0,0,0,.75);
-    }
+  border-bottom:8px double rgba(200,170,120,.18);
 
-    /* BURNT EDGES */
+  box-shadow:
+    inset 0 0 220px rgba(0,0,0,.95),
+    inset 0 -120px 120px rgba(0,0,0,.9);
+}
 
-    header::before{
-      content:"";
-      position:absolute;
-      inset:0;
+/* BURNT EDGES */
 
-      box-shadow:
-        inset 0 0 120px rgba(0,0,0,.95),
-        inset 0 0 250px rgba(0,0,0,.7);
+header::before{
+  content:"";
+  position:absolute;
+  inset:0;
 
-      pointer-events:none;
-    }
+  box-shadow:
+    inset 0 0 180px rgba(0,0,0,.98),
+    inset 0 0 350px rgba(0,0,0,.8);
 
-    header h1{
-      position:relative;
-      z-index:2;
+  pointer-events:none;
+}
 
-      font-family:"Cinzel", serif;
+header h1{
+  position:relative;
+  z-index:2;
 
-      font-size:clamp(3rem, 7vw, 7rem);
+  font-family:"IM Fell English SC", serif;
 
-      text-transform:uppercase;
+  font-size:clamp(3rem, 8vw, 7.5rem);
 
-      max-width:1200px;
+  color:#ead7b0;
 
-      line-height:1.05;
+  line-height:1;
 
-      letter-spacing:4px;
+  letter-spacing:4px;
 
-      color:#efe1c4;
+  max-width:1200px;
 
-      margin-bottom:2rem;
+  margin-bottom:2rem;
 
-      text-shadow:
-        0 2px 0 #000,
-        0 4px 0 #000,
-        0 10px 25px rgba(0,0,0,.8);
+  text-transform:uppercase;
 
-      transform:rotate(-1deg);
-    }
+  text-shadow:
+    0 2px 0 #000,
+    0 5px 0 #000,
+    0 10px 25px rgba(0,0,0,.9);
 
-    header p{
-      position:relative;
-      z-index:2;
+  transform:rotate(-1deg);
+}
 
-      max-width:780px;
+header p{
+  position:relative;
+  z-index:2;
 
-      font-size:1.5rem;
+  max-width:750px;
 
-      color:#dbc5a0;
+  color:#d7bf97;
 
-      font-style:italic;
+  font-size:1.4rem;
 
-      letter-spacing:.5px;
+  font-style:italic;
 
-      font-family:"Special Elite", cursive;
+  opacity:.9;
 
-      opacity:.9;
-    }
+  letter-spacing:1px;
+}
 
-    /* NAVIGATION */
+/* NAVIGATION */
 
-    nav{
-      position:sticky;
-      top:0;
-      z-index:1000;
+nav{
+  position:sticky;
+  top:0;
+  z-index:1000;
 
-      display:flex;
-      justify-content:center;
-      flex-wrap:wrap;
-      gap:.5rem;
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
 
-      padding:1rem;
+  gap:.2rem;
 
-      background:
-        linear-gradient(to bottom, #533825, #2f1d12);
+  padding:.8rem;
 
-      border-top:2px solid rgba(255,255,255,.05);
-      border-bottom:5px double rgba(214,192,160,.18);
+  background:
+    linear-gradient(to bottom, #4a3120, #27170d);
 
-      box-shadow:
-        0 8px 20px rgba(0,0,0,.55);
-    }
+  border-top:2px solid rgba(255,255,255,.05);
+  border-bottom:6px double rgba(200,170,120,.15);
 
-    nav a{
-      color:#e6d4b5;
+  box-shadow:
+    0 8px 25px rgba(0,0,0,.65);
+}
 
-      text-decoration:none;
+nav a{
+  color:#dfc9a3;
 
-      padding:.7rem 1rem;
+  text-decoration:none;
 
-      font-size:.9rem;
+  padding:.7rem 1rem;
 
-      text-transform:uppercase;
+  font-size:.85rem;
 
-      letter-spacing:2px;
+  letter-spacing:2px;
 
-      font-family:"Cinzel", serif;
+  text-transform:uppercase;
 
-      border:1px solid transparent;
+  border:1px solid transparent;
 
-      transition:.25s ease;
-    }
+  transition:.2s ease;
+}
 
-    nav a:hover{
-      background:rgba(255,255,255,.06);
+nav a:hover{
+  background:rgba(255,255,255,.05);
 
-      border-color:rgba(255,255,255,.12);
+  border-color:rgba(255,255,255,.1);
 
-      transform:translateY(-2px);
+  color:#fff3dc;
+}
 
-      color:#fff4dc;
-    }
+/* MAIN */
 
-    /* MAIN */
+main{
+  padding:7rem 8%;
+}
 
-    main{
-      padding:7rem 8%;
-    }
+/* PAPER SECTION */
 
-    section{
-      position:relative;
+section{
+  position:relative;
 
-      background:
-        linear-gradient(
-          to bottom,
-          rgba(208,182,143,.97),
-          rgba(181,150,110,.97)
-        );
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(191,160,117,.98),
+      rgba(165,132,92,.98)
+    );
 
-      border:3px solid #5b3a24;
+  border:4px solid #4b2f1d;
 
-      padding:4rem;
+  padding:4rem;
 
-      box-shadow:
-        0 20px 45px rgba(0,0,0,.55),
-        inset 0 0 80px rgba(88,56,30,.25);
+  box-shadow:
+    0 20px 50px rgba(0,0,0,.7),
+    inset 0 0 120px rgba(78,48,24,.3);
 
-      overflow:hidden;
-    }
+  overflow:hidden;
 
-    /* WORN PAPER EDGES */
+  transform:rotate(-.5deg);
+}
 
-    section::before{
-      content:"";
-      position:absolute;
-      inset:12px;
+/* INNER BORDER */
 
-      border:1px solid rgba(50,30,18,.45);
+section::before{
+  content:"";
+  position:absolute;
+  inset:12px;
 
-      pointer-events:none;
-    }
+  border:1px solid rgba(46,28,16,.55);
 
-    section::after{
-      content:"";
-      position:absolute;
-      inset:0;
+  pointer-events:none;
+}
 
-      background:
-        url("https://www.transparenttextures.com/patterns/stardust.png");
+/* PAPER DAMAGE */
 
-      opacity:.15;
+section::after{
+  content:"";
+  position:absolute;
+  inset:0;
 
-      mix-blend-mode:multiply;
+  background:
+    url("https://www.transparenttextures.com/patterns/stardust.png");
 
-      pointer-events:none;
-    }
+  opacity:.18;
 
-    .two-column{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-      gap:4rem;
-      align-items:center;
-    }
+  mix-blend-mode:multiply;
 
-    h2{
-      font-family:"Cinzel", serif;
+  pointer-events:none;
+}
 
-      font-size:3.2rem;
+/* LAYOUT */
 
-      color:#2c1a10;
+.two-column{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+  gap:4rem;
+  align-items:center;
+}
 
-      margin-bottom:1.5rem;
+/* TEXT */
 
-      text-transform:uppercase;
+h2{
+  font-family:"IM Fell English SC", serif;
 
-      letter-spacing:2px;
+  font-size:3.5rem;
 
-      text-shadow:
-        1px 1px 0 rgba(255,255,255,.15);
-    }
+  color:#26170e;
 
-    p{
-      font-size:1.4rem;
+  margin-bottom:1.5rem;
 
-      color:#24160f;
+  letter-spacing:3px;
 
-      margin-bottom:1.5rem;
-    }
+  text-transform:uppercase;
 
-    /* TYPEWRITER LOOK */
+  text-shadow:
+    1px 1px 0 rgba(255,255,255,.12);
+}
 
-    .typewritten{
-      font-family:"Special Elite", cursive;
-    }
+p{
+  font-size:1.3rem;
 
-    /* BUTTON */
+  color:#1f140d;
 
-    .button{
-      display:inline-block;
+  margin-bottom:1.5rem;
+}
 
-      margin-top:1rem;
+/* BUTTON */
 
-      padding:1rem 2rem;
+.button{
+  display:inline-block;
 
-      background:
-        linear-gradient(to bottom, #6d4a2f, #4a311f);
+  margin-top:1rem;
 
-      color:#f3e5cb;
+  padding:1rem 2rem;
 
-      text-decoration:none;
+  background:
+    linear-gradient(to bottom, #6f4b2d, #492e1c);
 
-      text-transform:uppercase;
+  color:#f3e4c5;
 
-      letter-spacing:2px;
+  text-decoration:none;
 
-      font-family:"Cinzel", serif;
+  text-transform:uppercase;
 
-      border:2px solid rgba(0,0,0,.35);
+  letter-spacing:2px;
 
-      box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.08),
-        0 6px 14px rgba(0,0,0,.45);
+  border:3px solid rgba(0,0,0,.35);
 
-      transition:.25s ease;
-    }
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.08),
+    0 8px 18px rgba(0,0,0,.55);
 
-    .button:hover{
-      transform:translateY(-3px);
+  transition:.2s ease;
+}
 
-      background:
-        linear-gradient(to bottom, #7e593a, #5a3c27);
-    }
+.button:hover{
+  transform:translateY(-3px);
 
-    /* IMAGE */
+  background:
+    linear-gradient(to bottom, #835b39, #5b3a24);
+}
 
-    .image-card{
-      background:#2a1a10;
+/* IMAGE CARD */
 
-      padding:16px;
+.image-card{
+  background:#24150c;
 
-      border:5px solid #4a3120;
+  padding:18px;
 
-      box-shadow:
-        0 18px 35px rgba(0,0,0,.6);
+  border:6px solid #4a2e1c;
 
-      transform:rotate(-2deg);
+  box-shadow:
+    0 20px 40px rgba(0,0,0,.7);
 
-      transition:.35s ease;
-    }
+  transform:rotate(-2deg);
 
-    .image-card:hover{
-      transform:rotate(0deg) scale(1.02);
-    }
+  transition:.3s ease;
+}
 
-    .image-card img{
-      width:100%;
-      display:block;
+.image-card:hover{
+  transform:rotate(0deg) scale(1.02);
+}
 
-      border:4px solid #c9af88;
+.image-card img{
+  width:100%;
+  display:block;
 
-      filter:
-        sepia(.85)
-        contrast(1.08)
-        brightness(.82)
-        grayscale(.2);
-    }
+  border:4px solid #c9aa7f;
 
-    .image-content{
-      padding:1.5rem .5rem .2rem;
+  filter:
+    sepia(.95)
+    contrast(1.1)
+    brightness(.78)
+    grayscale(.25);
+}
 
-      text-align:center;
-    }
+.image-content{
+  padding:1.5rem .5rem .3rem;
 
-    .image-content strong{
-      display:block;
+  text-align:center;
+}
 
-      font-family:"Cinzel", serif;
+.image-content strong{
+  display:block;
 
-      font-size:1.8rem;
+  font-family:"IM Fell English SC", serif;
 
-      color:#f1e1c4;
+  font-size:1.9rem;
 
-      margin-bottom:.4rem;
+  color:#ecd8b3;
 
-      letter-spacing:1px;
-    }
+  margin-bottom:.4rem;
 
-    .image-content p{
-      color:#d7c09f;
+  letter-spacing:2px;
+}
 
-      font-size:1rem;
+.image-content p{
+  color:#d4bc98;
 
-      margin:0;
+  font-size:1rem;
 
-      font-style:italic;
+  margin:0;
 
-      font-family:"Special Elite", cursive;
-    }
+  font-style:italic;
+}
 
-    /* FOOTER */
+/* FOOTER */
 
-    footer{
-      text-align:center;
+footer{
+  text-align:center;
 
-      padding:2rem;
+  padding:2rem;
 
-      background:#170d08;
+  background:#120905;
 
-      color:#c5ae88;
+  color:#c4aa80;
 
-      border-top:6px double rgba(215,194,163,.2);
+  border-top:6px double rgba(200,170,120,.15);
 
-      letter-spacing:2px;
+  letter-spacing:2px;
 
-      font-family:"Special Elite", cursive;
-    }
+  font-size:.95rem;
+}
 
-    /* RESPONSIVE */
+/* MOBILE */
 
-    @media (max-width:768px){
+@media (max-width:768px){
 
-      header{
-        min-height:80vh;
-      }
+  header h1{
+    font-size:3.8rem;
+  }
 
-      header h1{
-        font-size:3.6rem;
-      }
+  header p{
+    font-size:1.1rem;
+  }
 
-      header p{
-        font-size:1.1rem;
-      }
+  main{
+    padding:4rem 5%;
+  }
 
-      main{
-        padding:4rem 5%;
-      }
+  section{
+    padding:2rem;
+  }
 
-      section{
-        padding:2rem;
-      }
+  h2{
+    font-size:2.3rem;
+  }
 
-      h2{
-        font-size:2.3rem;
-      }
+  p{
+    font-size:1.1rem;
+  }
 
-      p{
-        font-size:1.15rem;
-      }
+  nav a{
+    font-size:.7rem;
+    padding:.5rem .6rem;
+  }
 
-      nav a{
-        font-size:.72rem;
-        padding:.55rem .7rem;
-      }
+}
 
-    }
-
-  </style>
+</style>
 </head>
 
 <body>
@@ -514,13 +507,13 @@
 
       <h2>Welcome Recruit</h2>
 
-      <p class="typewritten">
+      <p>
         You have traded civilian life for military service.
         Most of your days will be spent marching, drilling,
         waiting, and surviving difficult camp conditions.
       </p>
 
-      <p class="typewritten">
+      <p>
         Explore each section to learn about training,
         uniforms, disease, battle, and daily life.
       </p>
