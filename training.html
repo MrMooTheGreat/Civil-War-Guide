@@ -1,0 +1,501 @@
+# Civil War Guide — Multi‑Page Website Structure
+
+Create these files in the same folder:
+
+```text
+index.html
+training.html
+uniforms.html
+health.html
+battles.html
+camp.html
+gallery.html
+style.css
+```
+
+---
+
+# 1. style.css
+
+```css
+:root {
+  --bg: #ede6d8;
+  --paper: #f9f6ef;
+  --card: rgba(255,255,255,0.75);
+  --border: rgba(90, 67, 43, 0.15);
+
+  --navy: #1f2e3d;
+  --navy-light: #31475c;
+
+  --gold: #b08a4a;
+
+  --text: #2b2b2b;
+  --muted: #6d675f;
+
+  --shadow: 0 10px 30px rgba(0,0,0,0.08);
+  --radius: 18px;
+}
+
+* {
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+header {
+  background:
+    linear-gradient(rgba(12,18,25,0.75), rgba(12,18,25,0.78)),
+    url("https://cdn.loc.gov/service/pnp/cwpb/01100/01141v.jpg") center/cover;
+  color: white;
+  text-align: center;
+  padding: 5rem 1rem;
+}
+
+header h1 {
+  font-size: clamp(2.5rem, 7vw, 5rem);
+  margin: 0;
+}
+
+header p {
+  max-width: 700px;
+  margin: 1rem auto 0;
+  opacity: 0.9;
+}
+
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background: rgba(249,246,239,0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  padding: 1rem;
+}
+
+nav a {
+  text-decoration: none;
+  color: var(--navy);
+  font-weight: 600;
+  padding: 0.7rem 1rem;
+  border-radius: 12px;
+  transition: 0.2s ease;
+}
+
+nav a:hover {
+  background: rgba(31,46,61,0.08);
+}
+
+main {
+  max-width: 1150px;
+  margin: auto;
+  padding: 3rem 1rem;
+}
+
+section {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 2rem;
+}
+
+section h2 {
+  margin-top: 0;
+  color: var(--navy);
+}
+
+.two-column {
+  display: grid;
+  grid-template-columns: 1.2fr 0.9fr;
+  gap: 2rem;
+}
+
+.image-card {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+
+.image-card img {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+}
+
+.image-content {
+  padding: 1rem;
+}
+
+.button {
+  display: inline-block;
+  margin-top: 1rem;
+  background: var(--gold);
+  color: white;
+  padding: 0.85rem 1.2rem;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+footer {
+  text-align: center;
+  color: var(--muted);
+  padding: 2rem 1rem 3rem;
+}
+
+@media (max-width: 850px) {
+  .two-column {
+    grid-template-columns: 1fr;
+  }
+}
+```
+
+---
+
+# 2. index.html (Homepage)
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Civil War Guide</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header>
+  <h1>So You've Joined the Army, Soldier</h1>
+  <p>
+    A practical and visual guide to life during the American Civil War.
+  </p>
+</header>
+
+<nav>
+  <a href="index.html">Home</a>
+  <a href="training.html">Training</a>
+  <a href="uniforms.html">Uniforms</a>
+  <a href="health.html">Health</a>
+  <a href="battles.html">Battles</a>
+  <a href="camp.html">Camp Life</a>
+  <a href="gallery.html">Gallery</a>
+</nav>
+
+<main>
+
+<section>
+  <div class="two-column">
+
+    <div>
+      <h2>Welcome Recruit</h2>
+
+      <p>
+        You have traded civilian life for military service.
+        Most of your days will be spent marching, drilling,
+        waiting, and surviving difficult camp conditions.
+      </p>
+
+      <p>
+        Explore each section to learn about training,
+        uniforms, disease, battle, and daily life.
+      </p>
+
+      <a href="training.html" class="button">
+        Begin the Guide
+      </a>
+    </div>
+
+    <div class="image-card">
+      <img src="https://cdn.loc.gov/service/pnp/cwpb/01100/01141v.jpg">
+
+      <div class="image-content">
+        <strong>New Recruits</strong>
+        <p>
+          Volunteer soldiers arriving at camp.
+        </p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<footer>
+  Educational historical content.
+</footer>
+
+</body>
+</html>
+```
+
+---
+
+# 3. training.html
+
+Replace ONLY the content inside `<main>` with training information.
+
+```html
+<main>
+  <section>
+    <div class="two-column">
+
+      <div>
+        <h2>Training & Daily Routine</h2>
+
+        <p>
+          Training camps transformed volunteers into soldiers.
+        </p>
+
+        <ul>
+          <li>Morning reveille</li>
+          <li>Weapons drill</li>
+          <li>Marching formations</li>
+          <li>Camp labor duties</li>
+        </ul>
+      </div>
+
+      <div class="image-card">
+        <img src="https://cdn.loc.gov/service/pnp/cwpb/01100/01145v.jpg">
+
+        <div class="image-content">
+          <strong>Military Drill</strong>
+          <p>
+            Soldiers spent most of their service training.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</main>
+```
+
+---
+
+# 4. uniforms.html
+
+```html
+<main>
+  <section>
+    <div class="two-column">
+
+      <div>
+        <h2>Uniforms & Equipment</h2>
+
+        <ul>
+          <li>Union blue uniforms</li>
+          <li>Confederate gray and butternut uniforms</li>
+          <li>Cartridge boxes and canteens</li>
+          <li>Rifles and bayonets</li>
+        </ul>
+      </div>
+
+      <div class="image-card">
+        <img src="https://cdn.loc.gov/service/pnp/cwpb/01100/01148v.jpg">
+
+        <div class="image-content">
+          <strong>Blue and Gray</strong>
+          <p>
+            Uniforms varied greatly depending on supply.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</main>
+```
+
+---
+
+# 5. health.html
+
+```html
+<main>
+  <section>
+    <div class="two-column">
+
+      <div>
+        <h2>Health & Hygiene</h2>
+
+        <p>
+          Disease killed more soldiers than battle.
+        </p>
+
+        <ul>
+          <li>Dysentery</li>
+          <li>Typhoid fever</li>
+          <li>Poor sanitation</li>
+          <li>Unsafe drinking water</li>
+        </ul>
+      </div>
+
+      <div class="image-card">
+        <img src="https://cdn.loc.gov/service/pnp/cwpb/01100/01142v.jpg">
+
+        <div class="image-content">
+          <strong>Field Hospitals</strong>
+          <p>
+            Wartime medicine remained primitive.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</main>
+```
+
+---
+
+# 6. battles.html
+
+```html
+<main>
+  <section>
+    <div class="two-column">
+
+      <div>
+        <h2>Battles & Combat</h2>
+
+        <p>
+          Combat was chaotic, loud, and terrifying.
+        </p>
+
+        <ul>
+          <li>Long marches before battle</li>
+          <li>Smoke and confusion</li>
+          <li>Line formations</li>
+          <li>Heavy casualties</li>
+        </ul>
+      </div>
+
+      <div class="image-card">
+        <img src="https://cdn.loc.gov/service/pnp/cwpb/01100/01140v.jpg">
+
+        <div class="image-content">
+          <strong>Battle Lines</strong>
+          <p>
+            Visibility was often poor during combat.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</main>
+```
+
+---
+
+# 7. camp.html
+
+```html
+<main>
+  <section>
+    <div class="two-column">
+
+      <div>
+        <h2>Camp Life</h2>
+
+        <ul>
+          <li>Hardtack and salted meat</li>
+          <li>Writing letters home</li>
+          <li>Card games and music</li>
+          <li>Winter huts and tents</li>
+        </ul>
+      </div>
+
+      <div class="image-card">
+        <img src="https://cdn.loc.gov/service/pnp/cwpb/01100/01149v.jpg">
+
+        <div class="image-content">
+          <strong>Winter Quarters</strong>
+          <p>
+            Soldiers built cabins to survive cold weather.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</main>
+```
+
+---
+
+# 8. gallery.html
+
+```html
+<main>
+
+<section>
+  <h2>Civil War Gallery</h2>
+
+  <div class="two-column">
+
+    <div class="image-card">
+      <img src="https://cdn.loc.gov/service/pnp/cwpb/01100/01144v.jpg">
+
+      <div class="image-content">
+        <strong>Company Street</strong>
+      </div>
+    </div>
+
+    <div class="image-card">
+      <img src="https://cdn.loc.gov/service/pnp/cwpb/01100/01143v.jpg">
+
+      <div class="image-content">
+        <strong>Letters Home</strong>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+</main>
+```
+
+---
+
+# How It Works
+
+* `style.css` controls the design for ALL pages.
+* Every HTML page uses the same navigation bar.
+* Clicking navigation links opens separate pages.
+* This makes the site feel more professional and easier to expand.
+* You can later add:
+
+  * animations
+  * dark mode
+  * timelines
+  * maps
+  * battle pages
+  * audio/music
+  * hover effects
+  * image galleries
