@@ -2,369 +2,563 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>So You’ve Joined the Army, Soldier: A Civil War Guide</title>
+  <title>So You’ve Joined the Army, Soldier</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
   <style>
+    :root {
+      --bg: #ede6d8;
+      --paper: #f9f6ef;
+      --card: rgba(255,255,255,0.75);
+      --border: rgba(90, 67, 43, 0.15);
+
+      --navy: #1f2e3d;
+      --navy-light: #31475c;
+
+      --gold: #b08a4a;
+      --gold-soft: #d9c09a;
+
+      --text: #2b2b2b;
+      --muted: #6d675f;
+
+      --shadow:
+        0 10px 30px rgba(0,0,0,0.08);
+
+      --radius: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
     body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       margin: 0;
-      background: #f5f2ea;
-      color: #222;
-      line-height: 1.6;
+      font-family: "Inter", sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(255,255,255,0.45), transparent 35%),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.75;
     }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    /* HERO */
+
     header {
-      background: #2f3b4c;
-      color: #fdfdfd;
-      padding: 1.5rem 1rem;
-      text-align: center;
-    }
-    header h1 {
-      margin: 0 0 0.3rem;
-      font-size: 2rem;
-    }
-    header p {
-      margin: 0;
-      font-size: 0.95rem;
-      opacity: 0.9;
-    }
-    nav {
-      background: #e0d7c5;
-      padding: 0.5rem 1rem;
+      position: relative;
+      min-height: 72vh;
       display: flex;
-      flex-wrap: wrap;
-      gap: 0.75rem;
+      align-items: center;
       justify-content: center;
+      text-align: center;
+      overflow: hidden;
+      color: white;
+      padding: 2rem;
+      background:
+        linear-gradient(rgba(12,18,25,0.72), rgba(12,18,25,0.78)),
+        url("https://cdn.loc.gov/service/pnp/cwpb/01100/01141v.jpg") center/cover;
     }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 900px;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      padding: 0.45rem 1rem;
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 999px;
+      backdrop-filter: blur(8px);
+      background: rgba(255,255,255,0.08);
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+
+    header h1 {
+      font-family: "Cinzel", serif;
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      line-height: 1.05;
+      margin: 0;
+      text-shadow: 0 8px 20px rgba(0,0,0,0.35);
+    }
+
+    .hero-subtitle {
+      margin-top: 1.5rem;
+      font-size: 1.15rem;
+      max-width: 700px;
+      margin-inline: auto;
+      color: rgba(255,255,255,0.9);
+    }
+
+    .hero-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+
+    .hero-buttons a {
+      text-decoration: none;
+      padding: 0.95rem 1.4rem;
+      border-radius: 14px;
+      font-weight: 600;
+      transition: 0.25s ease;
+    }
+
+    .primary-btn {
+      background: var(--gold);
+      color: white;
+      box-shadow: 0 8px 20px rgba(176,138,74,0.35);
+    }
+
+    .primary-btn:hover {
+      transform: translateY(-2px);
+      background: #c69a50;
+    }
+
+    .secondary-btn {
+      background: rgba(255,255,255,0.1);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.2);
+      backdrop-filter: blur(10px);
+    }
+
+    .secondary-btn:hover {
+      background: rgba(255,255,255,0.16);
+    }
+
+    /* NAV */
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      padding: 1rem;
+      background: rgba(249,246,239,0.86);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+
     nav a {
       text-decoration: none;
-      color: #2f3b4c;
+      color: var(--navy);
       font-weight: 600;
-      font-size: 0.9rem;
+      padding: 0.7rem 1rem;
+      border-radius: 12px;
+      transition: 0.2s ease;
     }
+
+    nav a:hover {
+      background: rgba(31,46,61,0.08);
+    }
+
+    /* MAIN */
+
     main {
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 1.5rem 1rem 3rem;
+      max-width: 1200px;
+      margin: auto;
+      padding: 5rem 1.25rem;
     }
+
     section {
-      margin-bottom: 2.5rem;
-      background: #fff;
-      border-radius: 6px;
-      padding: 1.5rem;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      background: var(--card);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow);
     }
+
     section h2 {
+      font-family: "Cinzel", serif;
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
       margin-top: 0;
-      border-bottom: 2px solid #e0d7c5;
-      padding-bottom: 0.4rem;
-      color: #2f3b4c;
+      margin-bottom: 1.5rem;
+      color: var(--navy);
+      position: relative;
+      padding-bottom: 0.8rem;
     }
+
+    section h2::after {
+      content: "";
+      width: 90px;
+      height: 4px;
+      border-radius: 999px;
+      background: linear-gradient(to right, var(--gold), transparent);
+      position: absolute;
+      left: 0;
+      bottom: 0;
+    }
+
     h3 {
-      margin-top: 1.4rem;
-      color: #3f4b5c;
+      color: var(--navy-light);
+      margin-top: 2rem;
+      margin-bottom: 0.7rem;
+      font-size: 1.2rem;
     }
-    .two-column {
-      display: grid;
-      grid-template-columns: minmax(0, 2fr) minmax(0, 1.5fr);
-      gap: 1.25rem;
-      align-items: flex-start;
+
+    p {
+      color: var(--text);
     }
-    .image-card {
-      background: #f7f3ea;
-      border-radius: 4px;
-      padding: 0.75rem;
-      font-size: 0.85rem;
-    }
-    .image-card img {
-      width: 100%;
-      border-radius: 4px;
-      display: block;
-      margin-bottom: 0.5rem;
-    }
+
     ul {
       padding-left: 1.2rem;
     }
+
     li {
-      margin-bottom: 0.35rem;
+      margin-bottom: 0.7rem;
     }
+
+    strong {
+      color: var(--navy);
+    }
+
+    /* GRID */
+
+    .two-column {
+      display: grid;
+      grid-template-columns: 1.3fr 0.9fr;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    /* IMAGE CARD */
+
+    .image-card {
+      background: rgba(255,255,255,0.7);
+      border: 1px solid rgba(0,0,0,0.06);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.08);
+    }
+
+    .image-card img {
+      height: 260px;
+      width: 100%;
+      object-fit: cover;
+    }
+
+    .image-content {
+      padding: 1.1rem;
+    }
+
+    .image-content strong {
+      display: block;
+      font-size: 1.05rem;
+      margin-bottom: 0.5rem;
+    }
+
+    /* TAGS */
+
+    .tag-wrap {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      margin-top: 1.5rem;
+    }
+
     .tag {
-      display: inline-block;
-      background: #e0d7c5;
-      color: #333;
+      background: rgba(176,138,74,0.12);
+      color: #7a5b2b;
+      border: 1px solid rgba(176,138,74,0.22);
+      padding: 0.45rem 0.85rem;
       border-radius: 999px;
-      padding: 0.1rem 0.6rem;
-      font-size: 0.75rem;
-      margin-right: 0.25rem;
-      margin-bottom: 0.25rem;
+      font-size: 0.82rem;
+      font-weight: 600;
     }
+
+    /* NOTICE */
+
     .notice {
-      background: #fff7d6;
-      border-left: 4px solid #e0b400;
-      padding: 0.75rem 1rem;
-      font-size: 0.9rem;
-      border-radius: 4px;
-      margin-bottom: 1rem;
+      background:
+        linear-gradient(to right, rgba(176,138,74,0.15), rgba(176,138,74,0.03));
+      border: 1px solid rgba(176,138,74,0.25);
+      border-left: 5px solid var(--gold);
+      border-radius: 14px;
+      padding: 1rem 1.2rem;
+      margin-bottom: 1.5rem;
     }
+
+    /* GALLERY */
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    /* FOOTER */
+
     footer {
       text-align: center;
-      font-size: 0.8rem;
-      color: #666;
-      padding: 1rem 0 2rem;
+      padding: 3rem 1rem;
+      color: var(--muted);
+      font-size: 0.95rem;
     }
-    @media (max-width: 720px) {
+
+    /* MOBILE */
+
+    @media (max-width: 850px) {
       .two-column {
         grid-template-columns: 1fr;
+      }
+
+      header {
+        min-height: 62vh;
+      }
+
+      section {
+        padding: 1.4rem;
+      }
+
+      nav {
+        justify-content: flex-start;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+      }
+
+      nav a {
+        white-space: nowrap;
       }
     }
   </style>
 </head>
+
 <body>
+
+  <!-- HERO -->
   <header>
-    <h1>So You’ve Joined the Army, Soldier</h1>
-    <p>A practical guide for new Union and Confederate volunteers in the American Civil War (1861–1865)</p>
+    <div class="hero-content">
+      <div class="hero-badge">
+        American Civil War • 1861–1865
+      </div>
+
+      <h1>So You’ve Joined the Army, Soldier</h1>
+
+      <p class="hero-subtitle">
+        A beautifully illustrated guide to the life of Union and Confederate volunteers —
+        from training grounds and muddy camps to battlefields and field hospitals.
+      </p>
+
+      <div class="hero-buttons">
+        <a href="#overview" class="primary-btn">Begin the Guide</a>
+        <a href="#gallery" class="secondary-btn">View Gallery</a>
+      </div>
+    </div>
   </header>
 
+  <!-- NAV -->
   <nav>
     <a href="#overview">Overview</a>
-    <a href="#training">Training & Daily Routine</a>
-    <a href="#uniforms">Uniforms & Equipment</a>
-    <a href="#health">Health & Hygiene</a>
-    <a href="#battles">Battles & Combat</a>
+    <a href="#training">Training</a>
+    <a href="#uniforms">Uniforms</a>
+    <a href="#health">Health</a>
+    <a href="#battles">Combat</a>
     <a href="#camp">Camp Life</a>
-    <a href="#gallery">Image Gallery</a>
+    <a href="#gallery">Gallery</a>
   </nav>
 
+  <!-- MAIN -->
   <main>
+
     <!-- Overview -->
     <section id="overview">
-      <h2>Welcome to the army</h2>
+      <h2>Welcome to the Army</h2>
+
       <div class="two-column">
+
         <div>
           <p>
-            You’ve traded farm, shop, or city street for a musket and a uniform. Whether you wear Union blue or Confederate gray,
-            your life is about to become a mix of boredom, hardship, fear, and fierce loyalty to the men beside you.
+            You’ve traded farm, workshop, or city street for a musket and a uniform.
+            Whether you wear Union blue or Confederate gray, your life is about to become
+            a mixture of boredom, fear, hardship, loyalty, and survival.
           </p>
+
           <p>
-            Most of your time will not be spent in glorious charges, but in marching, drilling, waiting, and trying to stay healthy.
-            This guide walks you through what to expect in training, what you’ll wear and carry, how to care for your body,
-            what battle is really like, and how you’ll live in camp.
+            Most of your days will not be spent in glorious charges, but in drilling,
+            marching, waiting, cleaning equipment, and trying not to get sick.
           </p>
-          <div>
-            <span class="tag">Union</span>
-            <span class="tag">Confederate</span>
+
+          <div class="tag-wrap">
+            <span class="tag">Union Army</span>
+            <span class="tag">Confederate Army</span>
             <span class="tag">Infantry</span>
-            <span class="tag">Artillery</span>
             <span class="tag">Cavalry</span>
+            <span class="tag">Artillery</span>
           </div>
         </div>
+
         <div class="image-card">
           <img src="https://cdn.loc.gov/service/pnp/cwpb/01100/01141v.jpg"
-               alt="Civil War recruits standing in formation in a training camp" />
-          <strong>New recruits in camp</strong>
-          <p>
-            Your first weeks will be spent learning to march, drill, and live under military discipline with hundreds of strangers.
-          </p>
+               alt="Civil War recruits standing in formation">
+
+          <div class="image-content">
+            <strong>New Recruits in Camp</strong>
+            <p>
+              Your first weeks will be spent learning discipline, drill,
+              and military routine alongside hundreds of strangers.
+            </p>
+          </div>
         </div>
+
       </div>
     </section>
 
     <!-- Training -->
     <section id="training">
-      <h2>Training and daily routine</h2>
+      <h2>Training & Daily Routine</h2>
+
       <div class="two-column">
+
         <div>
-          <h3>Learning to be a soldier</h3>
+          <h3>Learning to Be a Soldier</h3>
+
           <p>
-            Training camps turn volunteers into soldiers. Expect long days of drill—learning to march in step, form lines,
-            load and fire your weapon by command, and move as a unit rather than as individuals.
+            Training camps transform volunteers into organized military units.
+            You will learn marching formations, weapon handling, firing drills,
+            and how to move as part of a coordinated line.
           </p>
+
           <ul>
-            <li><strong>Morning:</strong> Reveille at dawn, roll call, breakfast, and first drill.</li>
-            <li><strong>Daytime:</strong> Company and battalion drill, weapons cleaning, fatigue duties.</li>
-            <li><strong>Evening:</strong> Dress parade, mail call, perhaps another drill, then taps.</li>
+            <li><strong>Morning:</strong> Reveille, breakfast, roll call, first drill.</li>
+            <li><strong>Day:</strong> Battalion drill, weapon maintenance, camp labor.</li>
+            <li><strong>Evening:</strong> Dress parade, mail call, taps.</li>
           </ul>
 
-          <h3>Discipline and expectations</h3>
+          <h3>Discipline</h3>
+
           <ul>
-            <li><strong>Obedience:</strong> Orders from officers and sergeants are to be followed without argument.</li>
-            <li><strong>Punctuality:</strong> Being late to roll call or formation can mean extra duty or punishment.</li>
-            <li><strong>Cleanliness of arms:</strong> Your musket or rifle must be kept clean and in working order.</li>
+            <li><strong>Obey orders immediately</strong></li>
+            <li><strong>Maintain clean equipment</strong></li>
+            <li><strong>Be punctual for formation</strong></li>
           </ul>
         </div>
+
         <div class="image-card">
           <img src="https://cdn.loc.gov/service/pnp/cwpb/01100/01145v.jpg"
-               alt="Civil War soldiers drilling on a parade ground" />
-          <strong>Drill, drill, drill</strong>
-          <p>
-            Only a small fraction of your time will be spent in actual combat—most days are repetitive training and camp duties.
-          </p>
+               alt="Civil War soldiers drilling">
+
+          <div class="image-content">
+            <strong>Drill, Drill, Drill</strong>
+            <p>
+              Combat is rare compared to the endless rhythm of marching,
+              formation practice, and camp maintenance.
+            </p>
+          </div>
         </div>
+
       </div>
     </section>
 
-    <!-- Uniforms -->
-    <section id="uniforms">
-      <h2>Uniforms and equipment</h2>
-      <div class="two-column">
-        <div>
-          <h3>What you’ll wear</h3>
-          <ul>
-            <li><strong>Union:</strong> Dark blue wool coat or sack coat, light blue trousers, forage cap or kepi.</li>
-            <li><strong>Confederate:</strong> Gray or “butternut” jackets and trousers, often irregular due to shortages.</li>
-            <li><strong>Undergarments:</strong> Cotton or wool shirts and drawers.</li>
-          </ul>
-
-          <h3>What you’ll carry</h3>
-          <ul>
-            <li><strong>Weapon:</strong> Standard infantry arms of the period.</li>
-            <li><strong>Accoutrements:</strong> Cartridge box, cap box, belt, bayonet scabbard.</li>
-            <li><strong>Pack:</strong> Blanket, extra shirt and socks, tin plate and cup, utensils, personal items.</li>
-            <li><strong>Other:</strong> Canteen, haversack for rations.</li>
-          </ul>
-        </div>
-        <div class="image-card">
-          <img src="https://cdn.loc.gov/service/pnp/cwpb/01100/01148v.jpg"
-               alt="Side-by-side illustration of Union and Confederate uniforms" />
-          <strong>Blue and gray</strong>
-          <p>
-            Uniforms help identify friend from foe, but in the smoke and confusion of battle, colors and flags are still easy to mistake.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Health & Hygiene -->
+    <!-- Health -->
     <section id="health">
-      <h2>Health and hygiene</h2>
+      <h2>Health & Hygiene</h2>
+
       <div class="notice">
-        <strong>Important:</strong> In this war, disease kills more soldiers than bullets.
+        <strong>Important:</strong>
+        Disease kills more Civil War soldiers than battlefield wounds.
       </div>
+
       <div class="two-column">
+
         <div>
-          <h3>Common dangers</h3>
+          <h3>Common Dangers</h3>
+
           <ul>
-            <li><strong>Disease:</strong> Dysentery, typhoid, pneumonia, measles, malaria.</li>
-            <li><strong>Poor sanitation:</strong> Contaminated water and badly placed latrines.</li>
-            <li><strong>Malnutrition:</strong> Limited diets weaken the body.</li>
+            <li>Dysentery and typhoid</li>
+            <li>Poor sanitation</li>
+            <li>Malnutrition</li>
+            <li>Contaminated water</li>
           </ul>
 
-          <h3>What you can do</h3>
-          <ul>
-            <li><strong>Wash when you can:</strong> Clean hands and face.</li>
-            <li><strong>Protect your feet:</strong> Keep them dry and treat blisters early.</li>
-            <li><strong>Use latrines properly:</strong> Avoid polluting water sources.</li>
-            <li><strong>Boil water if possible:</strong> Reduces disease risk.</li>
-          </ul>
+          <h3>Staying Healthy</h3>
 
-          <h3>Medical care</h3>
-          <p>
-            Army surgeons work under harsh conditions with limited knowledge of infection. Hospitals can save lives, but disease spreads easily.
-          </p>
+          <ul>
+            <li>Keep feet dry</li>
+            <li>Wash whenever possible</li>
+            <li>Use latrines properly</li>
+            <li>Boil water when available</li>
+          </ul>
         </div>
+
         <div class="image-card">
           <img src="https://cdn.loc.gov/service/pnp/cwpb/01100/01142v.jpg"
-               alt="Civil War field hospital with wounded soldiers and surgeons" />
-          <strong>Field hospitals</strong>
-          <p>
-            Medical care is improving but still primitive.
-          </p>
+               alt="Civil War field hospital">
+
+          <div class="image-content">
+            <strong>Field Hospitals</strong>
+            <p>
+              Surgeons work under brutal conditions with limited medical knowledge
+              and overcrowded facilities.
+            </p>
+          </div>
         </div>
+
       </div>
     </section>
 
-    <!-- Battles -->
-    <section id="battles">
-      <h2>Battles and combat</h2>
-      <div class="two-column">
-        <div>
-          <h3>What battle is really like</h3>
-          <p>
-            Battle is noise, smoke, confusion, and fear. You’ll stand in long lines, shoulder to shoulder, firing volleys at men doing the same.
-          </p>
-          <ul>
-            <li><strong>Before battle:</strong> Long marches, nervous waiting.</li>
-            <li><strong>During battle:</strong> Follow orders, keep formation.</li>
-            <li><strong>After battle:</strong> Aid the wounded, regroup.</li>
-          </ul>
-
-          <h3>Staying alive</h3>
-          <ul>
-            <li><strong>Stay with your unit:</strong> Stragglers are vulnerable.</li>
-            <li><strong>Keep your head:</strong> Panic spreads quickly.</li>
-            <li><strong>Use cover when allowed:</strong> Terrain can help.</li>
-          </ul>
-        </div>
-        <div class="image-card">
-          <img src="https://cdn.loc.gov/service/pnp/cwpb/01100/01140v.jpg"
-               alt="Civil War battle lines advancing through smoke" />
-          <strong>Lines in the smoke</strong>
-          <p>
-            Visibility can be poor, commands hard to hear, and it may be difficult to tell how the battle is going.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Camp Life -->
-    <section id="camp">
-      <h2>Camp life</h2>
-      <div class="two-column">
-        <div>
-          <h3>Your real battlefield: the camp</h3>
-          <p>
-            Most of your service will be spent in camp. Camps can be temporary tent sites or more permanent winter quarters.
-          </p>
-
-          <h3>Food and rations</h3>
-          <ul>
-            <li><strong>Union rations:</strong> Hardtack, salted meat, beans, rice, coffee.</li>
-            <li><strong>Confederate rations:</strong> Cornmeal, bacon, peas or rice.</li>
-            <li><strong>Supplementing:</strong> Foraging, buying from sutlers.</li>
-          </ul>
-
-          <h3>Passing the time</h3>
-          <ul>
-            <li><strong>Letters home:</strong> A lifeline to family.</li>
-            <li><strong>Games and music:</strong> Cards, dice, singing.</li>
-            <li><strong>Religion and reflection:</strong> Chaplains hold services.</li>
-          </ul>
-        </div>
-        <div class="image-card">
-          <img src="https://cdn.loc.gov/service/pnp/cwpb/01100/01149v.jpg"
-               alt="Civil War winter camp with rows of log huts and soldiers" />
-          <strong>Winter quarters</strong>
-          <p>
-            Soldiers build huts, improve their living spaces, and try to stay warm.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Image Gallery -->
+    <!-- Gallery -->
     <section id="gallery">
-      <h2>Image gallery</h2>
-      <p>
-        All images below are authentic Civil War photographs from the Library of Congress.
-      </p>
-      <div class="two-column">
+      <h2>Civil War Gallery</h2>
+
+      <div class="gallery-grid">
+
         <div class="image-card">
           <img src="https://cdn.loc.gov/service/pnp/cwpb/01100/01144v.jpg"
-               alt="Company street in a Civil War camp with tents and soldiers" />
-          <strong>Company street</strong>
-          <p>A row of tents or huts where your company sleeps, cooks, and gathers.</p>
+               alt="Company street">
+
+          <div class="image-content">
+            <strong>Company Street</strong>
+            <p>
+              Rows of tents and huts formed the heart of army camps.
+            </p>
+          </div>
         </div>
+
         <div class="image-card">
           <img src="https://cdn.loc.gov/service/pnp/cwpb/01100/01143v.jpg"
-               alt="Civil War soldiers sitting and writing letters in camp" />
-          <strong>Letters home</strong>
-          <p>Writing home is one of the most important ways soldiers cope with distance and danger.</p>
+               alt="Writing letters home">
+
+          <div class="image-content">
+            <strong>Letters Home</strong>
+            <p>
+              Writing family members became one of the emotional lifelines of military life.
+            </p>
+          </div>
         </div>
+
       </div>
     </section>
+
   </main>
 
+  <!-- FOOTER -->
   <footer>
-    <p>This site is an educational guide to the lived experience of Civil War soldiers and does not glorify war.</p>
+    <p>
+      Educational historical content • Designed to present the lived experiences
+      of Civil War soldiers without glorifying war.
+    </p>
   </footer>
+
 </body>
 </html>
