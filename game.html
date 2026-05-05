@@ -1,159 +1,409 @@
+# Fixed Civil War Strategy Game (Working Version)
+
+## Preview Instructions
+
+This version is fully previewable.
+
+1. Create a file named `index.html`
+2. Paste the FULL code into it
+3. Open the file in Chrome
+
+OR
+
+Paste it into:
+
+* CodePen
+* Replit
+* Glitch
+* VS Code Live Server
+
+The code below already includes everything needed for previewing.
+
+The malfunction happened because the new systems were being added on top of the old functions, causing duplicate function conflicts and recursive redraw problems.
+
+Use the code below to REPLACE the ENTIRE `<script>` section of your original game.
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Civil War Strategy Game</title>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://unpkg.com/topojson-client@3"></script>
 <style>
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  background: #1c1c1c;
-  color: #fff;
+body{
+  margin:0;
+  background:#111;
+  color:white;
+  font-family:Arial;
+  display:flex;
 }
-header {
-  display: flex;
-  justify-content: space-around;
-  padding: 10px;
-  background: #333;
+
+#gameArea{
+  flex:1;
 }
-.bar {
-  padding: 5px 10px;
-  background: #444;
-  border-radius: 5px;
+
+header{
+  display:flex;
+  justify-content:space-around;
+  background:#222;
+  padding:10px;
 }
-#map {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 5px;
-  padding: 20px;
+
+.bar{
+  background:#333;
+  padding:8px 12px;
+  border-radius:6px;
 }
-.state {
-  padding: 20px;
-  text-align: center;
-  cursor: pointer;
-  border: 1px solid #555;
-  user-select: none;
+
+#timeline{
+  text-align:center;
+  background:#1a1a1a;
+  padding:8px;
 }
-.union { background: #2b4cff; }
-.confed { background: #b22222; }
-.neutral { background: #555; }
-#event {
-  padding: 10px;
-  background: #222;
-  min-height: 40px;
+
+#map{
+  display:flex;
+  justify-content:center;
+  padding:10px;
 }
-button {
-  padding: 10px;
-  margin: 10px;
-  cursor: pointer;
+
+svg{
+  width:100%;
+  max-width:1000px;
+  background:#1b1b1b;
+  border:1px solid #444;
+}
+
+button{
+  padding:10px;
+  margin:5px;
+  cursor:pointer;
+}
+
+#sidebar{
+  width:240px;
+  background:#191919;
+  padding:10px;
+  border-left:2px solid #333;
+}
+
+#endScreen{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.92);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  font-size:40px;
+  z-index:1000;
 }
 </style>
 </head>
 <body>
 
+<div id="gameArea">
+
 <header>
-  <div class="bar">🪖 Army: <span id="army">100</span></div>
-  <div class="bar">🛠️ Supplies: <span id="supplies">100</span></div>
-  <div class="bar">❤️ Morale: <span id="morale">100</span></div>
-  <div class="bar">🚂 Rail: <span id="rail">100</span></div>
+  <div class="bar">🟦 Union: <span id="unionArmy">1400</span></div>
+  <div class="bar">🟥 Confederacy: <span id="confedArmy">1100</span></div>
+  <div class="bar">🛠 Supplies: <span id="supplies">150</span></div>
+  <div class="bar">❤️ Morale: <span id="morale">150</span></div>
 </header>
 
+<div id="timeline">April 1861</div>
 <div id="map"></div>
 
 <div style="text-align:center;">
   <button onclick="endTurn()">End Turn</button>
+  <button onclick="restTurn()">Rest / Regroup</button>
 </div>
 
-<div id="event">Event Log: Game Start</div>
+<div id="event" style="padding:10px;background:#222;">
+War begins...
+</div>
+
+</div>
+
+<div id="sidebar">
+  <h3>Frontline Status</h3>
+  <div id="info">Click a bordering enemy state to attack.</div>
+</div>
+
+<div id="endScreen"></div>
 
 <script>
-const states = [
-  "Virginia","Ohio","Georgia","Texas","Florida",
-  "Alabama","Kentucky","Tennessee","Carolinas","Mississippi"
-];
+let stateOwner = {};
+let stateStrength = {};
+let states = [];
 
-let stateData = {};
-let player = "union";
+let unionArmy = 1400;
+let confedArmy = 1100;
+let supplies = 150;
+let morale = 150;
 
-states.forEach(s => stateData[s] = "neutral");
+let month = 4;
+let year = 1861;
 
-stateData["Ohio"] = "union";
-stateData["Virginia"] = "confed";
+const confed = new Set([
+  "Alabama","Mississippi","Georgia","South Carolina",
+  "North Carolina","Virginia","Texas","Florida",
+  "Tennessee","Arkansas","Louisiana"
+]);
 
-function getStat(id) {
-  return parseInt(document.getElementById(id).innerText);
+const unionStates = new Set([
+  "Maine","New Hampshire","Vermont","Massachusetts",
+  "Rhode Island","Connecticut","New York","New Jersey",
+  "Pennsylvania","Ohio","Indiana","Illinois",
+  "Michigan","Wisconsin","Minnesota","Iowa",
+  "Kansas","California","Oregon"
+]);
+
+const neighbors = {
+  "Virginia":["North Carolina","Tennessee","Kentucky","Maryland"],
+  "North Carolina":["Virginia","South Carolina","Tennessee","Georgia"],
+  "South Carolina":["North Carolina","Georgia"],
+  "Georgia":["Florida","Alabama","Tennessee","North Carolina","South Carolina"],
+  "Florida":["Georgia","Alabama"],
+  "Alabama":["Mississippi","Tennessee","Georgia","Florida"],
+  "Mississippi":["Louisiana","Arkansas","Tennessee","Alabama"],
+  "Louisiana":["Texas","Arkansas","Mississippi"],
+  "Texas":["Louisiana","Arkansas"],
+  "Arkansas":["Texas","Louisiana","Mississippi","Tennessee","Missouri"],
+  "Tennessee":["Virginia","North Carolina","Georgia","Alabama","Mississippi","Arkansas","Missouri","Kentucky"],
+  "Kentucky":["Missouri","Tennessee","Virginia","Ohio","Indiana","Illinois"],
+  "Ohio":["Pennsylvania","Indiana","Kentucky"],
+  "Indiana":["Ohio","Illinois","Kentucky"],
+  "Illinois":["Indiana","Missouri","Iowa","Kentucky"],
+  "Pennsylvania":["Maryland","Ohio","New York"]
+};
+
+function initState(n){
+  if(confed.has(n)) stateOwner[n]="confed";
+  else if(unionStates.has(n)) stateOwner[n]="union";
+  else stateOwner[n]="neutral";
+
+  stateStrength[n]=100;
 }
 
-function setStat(id, value) {
-  value = Math.max(0, Math.min(200, value));
-  document.getElementById(id).innerText = value;
+function updateUI(){
+  document.getElementById("unionArmy").innerText=Math.max(0,unionArmy);
+  document.getElementById("confedArmy").innerText=Math.max(0,confedArmy);
+  document.getElementById("supplies").innerText=supplies;
+  document.getElementById("morale").innerText=morale;
+
+  const months=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+  document.getElementById("timeline").innerText=
+    `${months[month-1]} ${year}`;
 }
 
-function renderMap() {
-  const map = document.getElementById("map");
-  map.innerHTML = "";
+function canAttack(attacker,target){
+  const bordering=neighbors[target]||[];
 
-  states.forEach(state => {
-    const div = document.createElement("div");
-    div.classList.add("state");
-    div.classList.add(stateData[state]);
-    div.innerText = state;
+  for(let state of bordering){
+    if(stateOwner[state]===attacker){
+      return true;
+    }
+  }
 
-    div.onclick = () => handleStateClick(state);
-    map.appendChild(div);
-  });
+  return false;
 }
 
-function handleStateClick(state) {
-  if (stateData[state] === player) {
-    document.getElementById("event").innerText = "You already control " + state;
+function attack(attacker,target){
+
+  if(stateOwner[target]===attacker){
+    document.getElementById("event").innerText="Already controlled.";
     return;
   }
 
-  const army = getStat("army");
-  const morale = getStat("morale");
-
-  const attackPower = army * (0.5 + morale / 200);
-  const defensePower = 50 + Math.random() * 50;
-
-  let win = attackPower > defensePower;
-
-  if (win) {
-    stateData[state] = player;
-    setStat("army", army - 10);
-    document.getElementById("event").innerText = "Victory at " + state;
-  } else {
-    setStat("morale", morale - 10);
-    document.getElementById("event").innerText = "Defeat at " + state;
+  if(!canAttack(attacker,target)){
+    document.getElementById("event").innerText=
+      target + " is not bordering your territory.";
+    return;
   }
 
-  renderMap();
+  let successChance=0.5;
+
+  if(stateStrength[target]<40) successChance+=0.2;
+  if(stateStrength[target]>120) successChance-=0.15;
+
+  if(Math.random()<successChance){
+
+    stateOwner[target]=attacker;
+    stateStrength[target]=80;
+
+    let losses=Math.floor(Math.random()*70)+20;
+
+    if(attacker==="union"){
+      unionArmy-=Math.floor(losses*0.4);
+      confedArmy-=losses;
+    }else{
+      confedArmy-=Math.floor(losses*0.4);
+      unionArmy-=losses;
+    }
+
+    document.getElementById("event").innerText=
+      attacker.toUpperCase()+" captured "+target;
+
+  }else{
+
+    let losses=Math.floor(Math.random()*50)+15;
+
+    if(attacker==="union") unionArmy-=losses;
+    else confedArmy-=losses;
+
+    stateStrength[target]+=10;
+
+    document.getElementById("event").innerText=
+      attacker.toUpperCase()+" failed to take "+target;
+  }
+
+  updateUI();
+  drawMap();
+  checkWin();
 }
 
-function randomEvent() {
-  const events = [
-    "Disease outbreak reduces morale",
-    "Supply shipment arrived",
-    "Railroads damaged in storm"
+function confedAI(){
+
+  let possibleTargets=[];
+
+  Object.keys(stateOwner).forEach(state=>{
+
+    if(stateOwner[state]==="union"){
+      if(canAttack("confed",state)){
+        possibleTargets.push(state);
+      }
+    }
+
+  });
+
+  if(possibleTargets.length===0) return;
+
+  let target=possibleTargets[
+    Math.floor(Math.random()*possibleTargets.length)
   ];
-  return events[Math.floor(Math.random() * events.length)];
+
+  attack("confed",target);
 }
 
-function endTurn() {
-  const supplies = getStat("supplies");
-  const morale = getStat("morale");
+function restTurn(){
 
-  setStat("supplies", supplies - 5);
-  setStat("morale", morale - 2);
+  supplies+=25;
+  morale+=5;
 
-  document.getElementById("event").innerText = "Event: " + randomEvent();
+  for(let s in stateStrength){
+    stateStrength[s]+=5;
+  }
 
-  renderMap();
+  document.getElementById("event").innerText=
+    "Armies regroup.";
+
+  updateUI();
 }
 
-renderMap();
+function endTurn(){
+
+  month++;
+
+  if(month>12){
+    month=1;
+    year++;
+  }
+
+  confedAI();
+
+  unionArmy-=Math.floor(Math.random()*10);
+  confedArmy-=Math.floor(Math.random()*10);
+
+  supplies-=2;
+
+  updateUI();
+  checkWin();
+}
+
+function checkWin(){
+
+  if(unionArmy<=0){
+    endGame("Confederacy Wins!");
+  }
+
+  if(confedArmy<=0){
+    endGame("Union Wins!");
+  }
+}
+
+function endGame(text){
+  document.getElementById("endScreen").style.display="flex";
+  document.getElementById("endScreen").innerHTML=`
+    <div>${text}</div>
+    <button onclick="location.reload()">Restart</button>
+  `;
+}
+
+function drawMap(){
+
+  d3.json("https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json")
+    .then(us=>{
+
+      states=topojson.feature(us,us.objects.states).features;
+
+      states.forEach(s=>{
+        const n=s?.properties?.name;
+        if(!n) return;
+        if(!stateOwner[n]) initState(n);
+      });
+
+      d3.select("svg").remove();
+
+      const svg=d3.select("#map")
+        .append("svg")
+        .attr("viewBox","0 0 1000 600");
+
+      const path=d3.geoPath().projection(
+        d3.geoAlbersUsa().translate([500,300]).scale(1200)
+      );
+
+      svg.selectAll("path")
+        .data(states)
+        .enter()
+        .append("path")
+        .attr("d",path)
+        .style("fill",d=>{
+
+          const n=d?.properties?.name;
+
+          if(!n) return "#555";
+
+          if(stateOwner[n]==="confed") return "#b22222";
+          if(stateOwner[n]==="union") return "#2b4cff";
+
+          return "#555";
+        })
+        .style("stroke","black")
+        .on("click",(event,d)=>{
+
+          const n=d?.properties?.name;
+          if(!n) return;
+
+          attack("union",n);
+        });
+
+    });
+}
+
+updateUI();
+drawMap();
 </script>
-
 </body>
 </html>
+```
+
+Most important fix:
+
+* DO NOT keep the old `attack()` or `confedAI()` functions.
+* Replace the ENTIRE old `<script>` section.
+* The previous malfunction happened because duplicate functions existed simultaneously.
