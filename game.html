@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Civil War HOI4 Strategy</title>
+<title>Civil War Strategy Game</title>
 
 <style>
 body{
@@ -100,7 +100,7 @@ button{
 <div id="gameArea">
 
 <header>
-  <div class="bar">🟦 Union: <span id="unionArmy">1400</span></div>
+  <div class="bar">🟦 Union: <span id="unionArmy">2200</span></div>
   <div class="bar">🟥 Confederacy: <span id="confedArmy">1100</span></div>
   <div class="bar">🛠️ Supplies: <span id="supplies">150</span></div>
   <div class="bar">❤️ Morale: <span id="morale">150</span></div>
@@ -137,8 +137,13 @@ War begins...
 let stateOwner = {};
 let states = [];
 
-let unionArmy = 1400;
+// ======================
+// REALISTIC TROOP COUNTS
+// ======================
+
+let unionArmy = 2200;
 let confedArmy = 1100;
+
 let supplies = 150;
 let morale = 150;
 
@@ -162,6 +167,10 @@ const unionStates = new Set([
   "Michigan","Wisconsin","Minnesota","Iowa",
   "Kansas","California","Oregon"
 ]);
+
+// Store original number of states
+const startingConfedStates = confed.size;
+const startingUnionStates = unionStates.size;
 
 // ======================
 // NEIGHBOR MAP
@@ -262,24 +271,27 @@ function attack(attacker, defenderState){
     return;
   }
 
-  // TRUE 50/50
+  // TRUE 50/50 BATTLES
   const wonBattle = Math.random() < 0.5;
 
   if(wonBattle){
 
     stateOwner[defenderState] = attacker;
 
-    const loss = Math.floor(Math.random()*80)+20;
+    // Bigger losses in victories
+    const loss = Math.floor(Math.random()*90)+30;
 
     if(attacker === "union"){
 
       confedArmy -= loss;
-      unionArmy -= Math.floor(loss * 0.4);
+
+      // attacker still takes casualties
+      unionArmy -= Math.floor(loss * 0.55);
 
     } else {
 
       unionArmy -= loss;
-      confedArmy -= Math.floor(loss * 0.4);
+      confedArmy -= Math.floor(loss * 0.55);
     }
 
     document.getElementById("event").innerText =
@@ -289,12 +301,20 @@ function attack(attacker, defenderState){
 
   } else {
 
-    const loss = Math.floor(Math.random()*50)+10;
+    // Failed assaults are costly
+    const loss = Math.floor(Math.random()*70)+20;
 
     if(attacker === "union"){
+
       unionArmy -= loss;
+
+      // defender takes smaller losses
+      confedArmy -= Math.floor(loss * 0.25);
+
     } else {
+
       confedArmy -= loss;
+      unionArmy -= Math.floor(loss * 0.25);
     }
 
     document.getElementById("event").innerText =
@@ -311,7 +331,7 @@ function attack(attacker, defenderState){
 }
 
 // ======================
-// WIN CONDITIONS
+// BETTER WIN CONDITIONS
 // ======================
 
 function checkWin(){
@@ -324,12 +344,43 @@ function checkWin(){
     Object.values(stateOwner)
       .filter(v => v === "union").length;
 
-  if(confedArmy <= 0 || confedCount < 5){
-    endGame("Union Wins the War!");
+  // Confederacy surrenders if it loses half its states
+  if(confedCount <= Math.floor(startingConfedStates / 2)){
+
+    endGame(
+      "Union Wins! The Confederacy surrendered after losing over half its territory."
+    );
+
+    return;
   }
 
-  if(unionArmy <= 0 || unionCount < 5){
-    endGame("Confederacy Wins the War!");
+  // Union collapses if it loses half its states
+  if(unionCount <= Math.floor(startingUnionStates / 2)){
+
+    endGame(
+      "Confederacy Wins! The Union government collapsed after losing over half its territory."
+    );
+
+    return;
+  }
+
+  // Army destruction victory
+  if(confedArmy <= 0){
+
+    endGame(
+      "Union Wins! Confederate armies were destroyed."
+    );
+
+    return;
+  }
+
+  if(unionArmy <= 0){
+
+    endGame(
+      "Confederacy Wins! Union armies were destroyed."
+    );
+
+    return;
   }
 }
 
@@ -389,6 +440,7 @@ function endTurn(){
     attack("confed", target);
   }
 
+  // attrition
   unionArmy -= Math.floor(Math.random()*10);
   confedArmy -= Math.floor(Math.random()*10);
 
