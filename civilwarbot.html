@@ -165,8 +165,8 @@ async function sendMessage() {
     cwHistory.push({ role: "bot", content: reply });
     if (cwHistory.length > 6) cwHistory.shift();
   } catch (e) {
-    lastBot.textContent = "Sorry, something went wrong.";
-    console.error(e);
+    console.error("Error in sendMessage:", e);
+    lastBot.textContent = "Error: " + e.message;
   }
 }
 
@@ -184,13 +184,27 @@ async function askModel(question) {
   });
 
   const data = await response.json();
-  if (!Array.isArray(data) || !data[0] || !data[0].generated_text) {
-    console.log("HF response:", data);
-    throw new Error("Bad response from model");
+  console.log("HF response:", data);
+
+  // Handle common Hugging Face formats and errors
+  if (data.error) {
+    throw new Error(data.error);
   }
-  return data[0].generated_text;
+
+  // Some pipelines return an array of objects with generated_text
+  if (Array.isArray(data) && data[0] && data[0].generated_text) {
+    return data[0].generated_text;
+  }
+
+  // Some return a single object
+  if (data.generated_text) {
+    return data.generated_text;
+  }
+
+  throw new Error("Unexpected response format from model");
 }
 </script>
 
 </body>
 </html>
+
