@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Civil War AI</title>
+  <style>
+    #cw-chat-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #1a73e8;
+      color: white;
+      padding: 12px 18px;
+      border-radius: 50px;
+      cursor: pointer;
+      font-family: Arial, sans-serif;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      z-index: 9999;
+    }
+
+    #cw-chat-window {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      width: 320px;
+      height: 420px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+      z-index: 9999;
+    }
+
+    #cw-chat-messages {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+      background: #fafafa;
+    }
+
+    .cw-msg {
+      margin: 8px 0;
+      padding: 8px 12px;
+      border-radius: 10px;
+      max-width: 80%;
+      font-size: 14px;
+      line-height: 1.4;
+      white-space: pre-wrap;
+    }
+
+    .cw-user {
+      background: #1a73e8;
+      color: white;
+      margin-left: auto;
+    }
+
+    .cw-bot {
+      background: #f1f1f1;
+      color: black;
+      margin-right: auto;
+    }
+
+    #cw-chat-input-area {
+      display: flex;
+      border-top: 1px solid #ddd;
+      background: white;
+    }
+
+    #cw-chat-input {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      outline: none;
+      font-size: 14px;
+    }
+
+    #cw-chat-send {
+      background: #1a73e8;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Your normal site content here -->
+
+<div id="cw-chat-button">Civil War AI</div>
+
+<div id="cw-chat-window">
+  <div id="cw-chat-messages"></div>
+  <div id="cw-chat-input-area">
+    <input id="cw-chat-input" placeholder="Ask about the Civil War...">
+    <button id="cw-chat-send">Send</button>
+  </div>
+</div>
+
+<script>
+const API_URL = "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2";
+const HF_TOKEN = "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"; // <-- put your real token here
+
+// simple short-term memory: last few turns
+let cwHistory = [];
+
+document.getElementById("cw-chat-button").onclick = () => {
+  const win = document.getElementById("cw-chat-window");
+  win.style.display = win.style.display === "flex" ? "none" : "flex";
+};
+
+document.getElementById("cw-chat-send").onclick = sendMessage;
+document.getElementById("cw-chat-input").addEventListener("keypress", e => {
+  if (e.key === "Enter") sendMessage();
+});
+
+function addMessage(text, cls, typed = false) {
+  const box = document.getElementById("cw-chat-messages");
+  const msg = document.createElement("div");
+  msg.className = "cw-msg " + cls;
+  box.appendChild(msg);
+  if (typed) {
+    typeText(msg, text);
+  } else {
+    msg.textContent = text;
+  }
+  box.scrollTop = box.scrollHeight;
+}
+
+function typeText(element, text, speed = 20) {
+  let i = 0;
+  function type() {
+    if (i < text.length) {
+      element.textContent += text.charAt(i);
+      i++;
+      setTimeout(type, speed);
+    }
+  }
+  type();
+}
+
+async function sendMessage() {
+  const input = document.getElementById("cw-chat-input");
+  const text = input.value.trim();
+  if (!text) return;
+
+  addMessage(text, "cw-user");
+  input.value = "";
+
+  cwHistory.push({ role: "user", content: text });
+  if (cwHistory.length > 6) cwHistory.shift(); // keep it small
+
+  addMessage("...", "cw-bot"); // placeholder while loading
+  const botPlaceholder = document.querySelectorAll(".cw-bot");
+  const lastBot = botPlaceholder[botPlaceholder.length - 1];
+
+  try {
+    const reply = await askModel(text);
+    lastBot.textContent = "";
+    typeText(lastBot, reply);
+    cwHistory.push({ role: "bot", content: reply });
+    if (cwHistory.length > 6) cwHistory.shift();
+  } catch (e) {
+    lastBot.textContent = "Sorry, something went wrong.";
+    console.error(e);
+  }
+}
+
+async function askModel(question) {
+  const context = cwHistory.map(m => `${m.role === "user" ? "User" : "Assistant"}: ${m.content}`).join("\n");
+  const prompt = `You are a historian of the American Civil War. Answer clearly, accurately, and briefly.\n\nConversation so far:\n${context}\nUser: ${question}\nAssistant:`;
+
+  const response = await fetch(API_URL, {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${HF_TOKEN}`,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ inputs: prompt })
+  });
+
+  const data = await response.json();
+  if (!Array.isArray(data) || !data[0] || !data[0].generated_text) {
+    console.log("HF response:", data);
+    throw new Error("Bad response from model");
+  }
+  return data[0].generated_text;
+}
+</script>
+
+</body>
+</html>
