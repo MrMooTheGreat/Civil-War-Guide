@@ -177,10 +177,11 @@ async function askModel(question) {
   const response = await fetch(API_URL, {
     method: "POST",
     headers: {
-      "Authorization": `Bearer ${HF_TOKEN}`,
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({ inputs: prompt })
+    body: JSON.stringify({
+      inputs: UserMessage
+    })
   });
 
   const data = await response.json();
