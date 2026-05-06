@@ -141,7 +141,7 @@ let states = [];
 // REALISTIC TROOP COUNTS
 // ======================
 
-let unionArmy = 2200;
+let unionArmy = 1650;
 let confedArmy = 1100;
 
 let supplies = 150;
@@ -190,10 +190,10 @@ const neighbors = {
   "Arkansas":["Texas","Louisiana","Mississippi","Tennessee"],
   "Tennessee":["Virginia","North Carolina","Georgia","Alabama","Mississippi","Arkansas","Kentucky"],
   "Kentucky":["Tennessee","Virginia","Ohio","Indiana","Illinois"],
-  "Ohio":["Pennsylvania","Indiana","Kentucky"],
+  "Ohio":["Pennsylvania","Indiana","Kentucky","West Virginia"],
   "Indiana":["Ohio","Illinois","Kentucky"],
-  "Illinois":["Indiana","Kentucky","Iowa"],
-  "Pennsylvania":["Maryland","Ohio","New York"],
+  "Illinois":["Indiana","Kentucky","Iowa","Missouri"],
+  "Pennsylvania":["Maryland","Ohio","New York","West Virginia"],
   "New York":["Pennsylvania","Massachusetts","New Jersey","Vermont","Connecticut"],
   "Massachusetts":["New York","Connecticut","New Hampshire"],
   "Connecticut":["Massachusetts","Rhode Island","New York"],
@@ -204,8 +204,8 @@ const neighbors = {
   "Michigan":["Ohio","Wisconsin"],
   "Wisconsin":["Michigan","Illinois","Iowa","Minnesota"],
   "Minnesota":["Iowa","Wisconsin"],
-  "Iowa":["Minnesota","Wisconsin","Illinois"],
-  "Kansas":["Colorado"],
+  "Iowa":["Minnesota","Wisconsin","Illinois","Missouri"],
+  "Kansas":["Colorado","Missouri","Oklahoma"],
   "California":["Oregon"],
   "Oregon":["California"],
   "New Jersey":["Pennsylvania","New York"],
