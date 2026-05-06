@@ -137,10 +137,6 @@ War begins...
 let stateOwner = {};
 let states = [];
 
-// ======================
-// REALISTIC TROOP COUNTS
-// ======================
-
 let unionArmy = 1100;
 let confedArmy = 1100;
 
@@ -149,10 +145,6 @@ let morale = 150;
 
 let month = 4;
 let year = 1861;
-
-// ======================
-// STARTING STATES
-// ======================
 
 const confed = new Set([
   "Alabama","Mississippi","Georgia","South Carolina",
@@ -168,13 +160,8 @@ const unionStates = new Set([
   "Kansas","California","Oregon"
 ]);
 
-// Store original number of states
 const startingConfedStates = confed.size;
 const startingUnionStates = unionStates.size;
-
-// ======================
-// NEIGHBOR MAP
-// ======================
 
 const neighbors = {
 
@@ -212,10 +199,6 @@ const neighbors = {
   "Maryland":["Virginia","Pennsylvania"]
 };
 
-// ======================
-// INIT STATES
-// ======================
-
 function initState(n){
 
   if(confed.has(n)){
@@ -228,10 +211,6 @@ function initState(n){
     stateOwner[n] = "neutral";
   }
 }
-
-// ======================
-// BORDER LOGIC
-// ======================
 
 function canAttack(attacker, target){
 
@@ -257,12 +236,10 @@ function canAttack(attacker, target){
 
 function attack(attacker, defenderState){
 
-  // cannot attack own territory
   if(stateOwner[defenderState] === attacker){
     return;
   }
 
-  // must border
   if(!canAttack(attacker, defenderState)){
 
     document.getElementById("event").innerText =
@@ -271,21 +248,21 @@ function attack(attacker, defenderState){
     return;
   }
 
-  // TRUE 50/50 BATTLES
+  // ======================
+  // TRUE 50/50 BATTLE
+  // ======================
+
   const wonBattle = Math.random() < 0.5;
 
   if(wonBattle){
 
     stateOwner[defenderState] = attacker;
 
-    // Bigger losses in victories
     const loss = Math.floor(Math.random()*90)+30;
 
     if(attacker === "union"){
 
       confedArmy -= loss;
-
-      // attacker still takes casualties
       unionArmy -= Math.floor(loss * 0.55);
 
     } else {
@@ -301,14 +278,11 @@ function attack(attacker, defenderState){
 
   } else {
 
-    // Failed assaults are costly
     const loss = Math.floor(Math.random()*70)+20;
 
     if(attacker === "union"){
 
       unionArmy -= loss;
-
-      // defender takes smaller losses
       confedArmy -= Math.floor(loss * 0.25);
 
     } else {
@@ -330,10 +304,6 @@ function attack(attacker, defenderState){
   checkWin();
 }
 
-// ======================
-// BETTER WIN CONDITIONS
-// ======================
-
 function checkWin(){
 
   const confedCount =
@@ -344,7 +314,6 @@ function checkWin(){
     Object.values(stateOwner)
       .filter(v => v === "union").length;
 
-  // Confederacy surrenders if it loses half its states
   if(confedCount <= Math.floor(startingConfedStates / 2)){
 
     endGame(
@@ -354,7 +323,6 @@ function checkWin(){
     return;
   }
 
-  // Union collapses if it loses half its states
   if(unionCount <= Math.floor(startingUnionStates / 2)){
 
     endGame(
@@ -364,7 +332,6 @@ function checkWin(){
     return;
   }
 
-  // Army destruction victory
   if(confedArmy <= 0){
 
     endGame(
@@ -393,10 +360,6 @@ function endGame(text){
      <button onclick="location.reload()">Restart</button>`;
 }
 
-// ======================
-// TURN SYSTEM
-// ======================
-
 function restTurn(){
 
   supplies += 25;
@@ -417,7 +380,6 @@ function endTurn(){
     year++;
   }
 
-  // Confederate AI
   let possibleTargets = [];
 
   Object.keys(stateOwner).forEach(state => {
@@ -440,7 +402,6 @@ function endTurn(){
     attack("confed", target);
   }
 
-  // attrition
   unionArmy -= Math.floor(Math.random()*10);
   confedArmy -= Math.floor(Math.random()*10);
 
@@ -450,10 +411,6 @@ function endTurn(){
   drawMap();
   checkWin();
 }
-
-// ======================
-// UI
-// ======================
 
 function updateUI(){
 
@@ -477,10 +434,6 @@ function updateUI(){
   document.getElementById("timeline").innerText =
     `${months[month-1]} ${year}`;
 }
-
-// ======================
-// DRAW MAP
-// ======================
 
 function drawMap(){
 
