@@ -92,6 +92,10 @@ textarea {
   background: #40414f;
   color: white;
   resize: none;
+  overflow-y: hidden;
+  min-height: 40px;
+  max-height: 200px;
+  line-height: 1.4;
 }
 
 button.send {
@@ -104,7 +108,7 @@ button.send {
   cursor: pointer;
 }
 
-/* 🟣 single ChatGPT-style thinking bubble */
+/* thinking bubble */
 .thinking-bubble {
   display: inline-block;
   width: 10px;
@@ -113,7 +117,6 @@ button.send {
   background: #b0b0b0;
   opacity: 0.6;
   animation: pulseBubble 1s infinite ease-in-out;
-  vertical-align: middle;
 }
 
 @keyframes pulseBubble {
@@ -136,7 +139,8 @@ button.send {
   <div id="chat"></div>
 
   <div class="input-bar">
-    <textarea id="input" rows="1"></textarea>
+    <textarea id="input" rows="1"
+      placeholder="Ask anything about the American Civil War"></textarea>
     <button class="send" onclick="send()">Send</button>
   </div>
 
@@ -149,6 +153,31 @@ let memory = [];
 const MAX_MEMORY = 10;
 
 const chat = document.getElementById("chat");
+const input = document.getElementById("input");
+
+/* =========================
+   AUTO RESIZE (FIXED)
+========================= */
+function autoResize() {
+  requestAnimationFrame(() => {
+    input.style.height = "0px";
+    input.style.height = Math.min(input.scrollHeight, 200) + "px";
+  });
+}
+
+/* =========================
+   BLOCK NEWLINE BEFORE IT EXISTS
+   (THIS IS THE REAL FIX)
+========================= */
+input.addEventListener("beforeinput", (e) => {
+  if (e.inputType === "insertLineBreak") {
+    e.preventDefault();
+    send();
+  }
+});
+
+/* keep resizing while typing */
+input.addEventListener("input", autoResize);
 
 /* messages */
 function addMsg(text, type) {
@@ -160,7 +189,7 @@ function addMsg(text, type) {
   return div;
 }
 
-/* 🟣 single pulsing thinking bubble */
+/* loader */
 function addLoader() {
   const div = document.createElement("div");
   div.className = "msg bot";
@@ -175,23 +204,6 @@ function addLoader() {
   return div;
 }
 
-/* ✨ typing animation */
-function typeText(el, text, speed = 12) {
-  el.textContent = "";
-  let i = 0;
-
-  function type() {
-    if (i < text.length) {
-      el.textContent += text[i];
-      i++;
-      chat.scrollTop = chat.scrollHeight;
-      setTimeout(type, speed);
-    }
-  }
-
-  type();
-}
-
 /* reset */
 function resetChat() {
   memory = [];
@@ -201,12 +213,13 @@ function resetChat() {
 
 /* send */
 async function send() {
-  const input = document.getElementById("input");
   const text = input.value.trim();
   if (!text) return;
 
   addMsg(text, "user");
+
   input.value = "";
+  autoResize();
 
   const loader = addLoader();
 
@@ -240,7 +253,17 @@ async function send() {
     loader.remove();
 
     const botMsg = addMsg("", "bot");
-    typeText(botMsg, reply);
+
+    let i = 0;
+    function type() {
+      if (i < reply.length) {
+        botMsg.textContent += reply[i];
+        i++;
+        chat.scrollTop = chat.scrollHeight;
+        setTimeout(type, 12);
+      }
+    }
+    type();
 
     memory.push({ role: "assistant", content: reply });
     if (memory.length > MAX_MEMORY) memory = memory.slice(-MAX_MEMORY);
