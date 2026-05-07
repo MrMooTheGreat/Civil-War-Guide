@@ -91,11 +91,10 @@ textarea {
   border-radius: 8px;
   background: #40414f;
   color: white;
-  resize: none;
-  overflow-y: hidden;
+  resize: none;          /* important for auto-resize */
+  overflow-y: hidden;    /* hides scrollbar while expanding */
   min-height: 40px;
   max-height: 200px;
-  line-height: 1.4;
 }
 
 button.send {
@@ -147,7 +146,7 @@ button.send {
 </div>
 
 <script>
-const API_KEY = "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";
+const API_KEY = "PUT_YOUR_GROQ_KEY_HERE";
 
 let memory = [];
 const MAX_MEMORY = 10;
@@ -156,28 +155,24 @@ const chat = document.getElementById("chat");
 const input = document.getElementById("input");
 
 /* =========================
-   AUTO RESIZE (FIXED)
+   AUTO RESIZE TEXTAREA
 ========================= */
 function autoResize() {
-  requestAnimationFrame(() => {
-    input.style.height = "0px";
-    input.style.height = Math.min(input.scrollHeight, 200) + "px";
-  });
+  input.style.height = "auto";
+  input.style.height = Math.min(input.scrollHeight, 200) + "px";
 }
 
 /* =========================
-   BLOCK NEWLINE BEFORE IT EXISTS
-   (THIS IS THE REAL FIX)
+   ENTER / SHIFT+ENTER BEHAVIOR
 ========================= */
-input.addEventListener("beforeinput", (e) => {
-  if (e.inputType === "insertLineBreak") {
-    e.preventDefault();
-    send();
+input.addEventListener("input", autoResize);
+
+input.addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault();   // stop newline
+    send();               // send message
   }
 });
-
-/* keep resizing while typing */
-input.addEventListener("input", autoResize);
 
 /* messages */
 function addMsg(text, type) {
