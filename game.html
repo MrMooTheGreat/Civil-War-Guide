@@ -1,508 +1,75 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Civil War Strategy Game</title>
-
-<style>
 body{
+  background:#b89a70;
+  color:#1a120c;
+
+  font-family:"Times New Roman", Times, serif;
+
   margin:0;
-  font-family:Arial;
-  background:#111;
-  color:#fff;
-  display:flex;
+  padding:20px;
+
+  line-height:1.6;
 }
 
-#gameArea{
-  flex:1;
-  display:flex;
-  flex-direction:column;
+/* MAIN PAPER */
+
+.container{
+  max-width:1400px;   /* increased from 1200px */
+
+  margin:auto;
+
+  background:#c9ab80;
+
+  border:4px solid #3b2617;
+
+  padding:30px;
+
+  box-shadow:0 0 20px rgba(0,0,0,.35);
 }
 
-header{
-  display:flex;
-  justify-content:space-around;
-  padding:10px;
-  background:#2a2a2a;
-  flex-wrap:wrap;
-}
-
-.bar{
-  background:#3a3a3a;
-  padding:6px 10px;
-  border-radius:6px;
-  margin:2px;
-}
-
-#timeline{
-  text-align:center;
-  padding:6px;
-  background:#1d1d1d;
-  font-size:18px;
-}
+/* MAP */
 
 #map{
-  display:flex;
-  justify-content:center;
-  padding:10px;
+  background:#b08c62;
+
+  border:4px solid #3b2617;
+
+  padding:12px;
+
+  margin-bottom:20px;
 }
 
 svg{
   width:100%;
-  max-width:1050px;
-  background:#1b1b1b;
-  border:1px solid #444;
+
+  max-width:1250px;   /* increased from 1000px */
+
+  height:auto;
+
+  display:block;
+
+  margin:auto;
+
+  background:#8d6f4c;
 }
+
+/* BUTTONS */
 
 button{
-  padding:10px;
+  background:#5b3a24;
+
+  color:#f2dfbe;
+
+  border:2px solid #2a1a10;
+
+  padding:12px 18px;
+
   margin:6px;
+
   cursor:pointer;
+
+  text-transform:uppercase;
+
+  font-family:"Times New Roman", Times, serif;
+
+  font-size:16px;
 }
-
-#sidebar{
-  width:260px;
-  background:#1a1a1a;
-  border-left:2px solid #333;
-  padding:10px;
-}
-
-.panel{
-  background:#222;
-  padding:10px;
-  margin-bottom:10px;
-  border-radius:6px;
-}
-
-#endScreen{
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:rgba(0,0,0,0.92);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  flex-direction:column;
-  font-size:36px;
-  z-index:999;
-}
-</style>
-
-<script src="https://d3js.org/d3.v7.min.js"></script>
-<script src="https://unpkg.com/topojson-client@3"></script>
-</head>
-
-<body>
-
-<div id="gameArea">
-
-<header>
-  <div class="bar">🟦 Union: <span id="unionArmy">1100</span></div>
-  <div class="bar">🟥 Confederacy: <span id="confedArmy">1100</span></div>
-  <div class="bar">🛠️ Supplies: <span id="supplies">150</span></div>
-  <div class="bar">❤️ Morale: <span id="morale">150</span></div>
-</header>
-
-<div id="timeline">April 1861</div>
-
-<div id="map"></div>
-
-<div style="text-align:center;">
-  <button onclick="endTurn()">End Turn</button>
-  <button onclick="restTurn()">Rest / Regroup</button>
-</div>
-
-<div id="event" style="padding:10px;background:#222;">
-War begins...
-</div>
-
-</div>
-
-<div id="sidebar">
-  <div class="panel">
-    <b>Frontline Status</b>
-    <div id="info">
-      You may only attack bordering enemy states.
-    </div>
-  </div>
-</div>
-
-<div id="endScreen"></div>
-
-<script>
-
-let stateOwner = {};
-let states = [];
-
-let unionArmy = 1100;
-let confedArmy = 1100;
-
-let supplies = 150;
-let morale = 150;
-
-let month = 4;
-let year = 1861;
-
-const confed = new Set([
-  "Alabama","Mississippi","Georgia","South Carolina",
-  "North Carolina","Virginia","Texas","Florida",
-  "Tennessee","Arkansas","Louisiana"
-]);
-
-const unionStates = new Set([
-  "Maine","New Hampshire","Vermont","Massachusetts",
-  "Rhode Island","Connecticut","New York","New Jersey",
-  "Pennsylvania","Ohio","Indiana","Illinois",
-  "Michigan","Wisconsin","Minnesota","Iowa",
-  "Kansas","California","Oregon"
-]);
-
-const startingConfedStates = confed.size;
-const startingUnionStates = unionStates.size;
-
-const neighbors = {
-
-  "Virginia":["North Carolina","Tennessee","Kentucky","Maryland"],
-  "North Carolina":["Virginia","South Carolina","Georgia","Tennessee"],
-  "South Carolina":["North Carolina","Georgia"],
-  "Georgia":["Florida","Alabama","Tennessee","North Carolina","South Carolina"],
-  "Florida":["Georgia","Alabama"],
-  "Alabama":["Mississippi","Tennessee","Georgia","Florida"],
-  "Mississippi":["Louisiana","Arkansas","Tennessee","Alabama"],
-  "Louisiana":["Texas","Arkansas","Mississippi"],
-  "Texas":["Louisiana","Arkansas"],
-  "Arkansas":["Texas","Louisiana","Mississippi","Tennessee"],
-  "Tennessee":["Virginia","North Carolina","Georgia","Alabama","Mississippi","Arkansas","Kentucky"],
-  "Kentucky":["Tennessee","Virginia","Ohio","Indiana","Illinois"],
-  "Ohio":["Pennsylvania","Indiana","Kentucky","West Virginia"],
-  "Indiana":["Ohio","Illinois","Kentucky"],
-  "Illinois":["Indiana","Kentucky","Iowa","Missouri"],
-  "Pennsylvania":["Maryland","Ohio","New York","West Virginia"],
-  "New York":["Pennsylvania","Massachusetts","New Jersey","Vermont","Connecticut"],
-  "Massachusetts":["New York","Connecticut","New Hampshire"],
-  "Connecticut":["Massachusetts","Rhode Island","New York"],
-  "Rhode Island":["Connecticut"],
-  "Maine":["New Hampshire"],
-  "New Hampshire":["Maine","Vermont","Massachusetts"],
-  "Vermont":["New Hampshire","New York"],
-  "Michigan":["Ohio","Wisconsin"],
-  "Wisconsin":["Michigan","Illinois","Iowa","Minnesota"],
-  "Minnesota":["Iowa","Wisconsin"],
-  "Iowa":["Minnesota","Wisconsin","Illinois","Missouri"],
-  "Kansas":["Colorado","Missouri","Oklahoma"],
-  "California":["Oregon"],
-  "Oregon":["California"],
-  "New Jersey":["Pennsylvania","New York"],
-  "Maryland":["Virginia","Pennsylvania"]
-};
-
-function initState(n){
-
-  if(confed.has(n)){
-    stateOwner[n] = "confed";
-  }
-  else if(unionStates.has(n)){
-    stateOwner[n] = "union";
-  }
-  else{
-    stateOwner[n] = "neutral";
-  }
-}
-
-function canAttack(attacker, target){
-
-  const ownedStates =
-    Object.keys(stateOwner)
-      .filter(s => stateOwner[s] === attacker);
-
-  for(let owned of ownedStates){
-
-    const bordering = neighbors[owned] || [];
-
-    if(bordering.includes(target)){
-      return true;
-    }
-  }
-
-  return false;
-}
-
-// ======================
-// ATTACK SYSTEM
-// ======================
-
-function attack(attacker, defenderState){
-
-  if(stateOwner[defenderState] === attacker){
-    return;
-  }
-
-  if(!canAttack(attacker, defenderState)){
-
-    document.getElementById("event").innerText =
-      defenderState + " does not border your territory.";
-
-    return;
-  }
-
-  // ======================
-  // TRUE 50/50 BATTLE
-  // ======================
-
-  const wonBattle = Math.random() < 0.5;
-
-  if(wonBattle){
-
-    stateOwner[defenderState] = attacker;
-
-    const loss = Math.floor(Math.random()*90)+30;
-
-    if(attacker === "union"){
-
-      confedArmy -= loss;
-      unionArmy -= Math.floor(loss * 0.55);
-
-    } else {
-
-      unionArmy -= loss;
-      confedArmy -= Math.floor(loss * 0.55);
-    }
-
-    document.getElementById("event").innerText =
-      attacker.toUpperCase() +
-      " captured " +
-      defenderState;
-
-  } else {
-
-    const loss = Math.floor(Math.random()*70)+20;
-
-    if(attacker === "union"){
-
-      unionArmy -= loss;
-      confedArmy -= Math.floor(loss * 0.25);
-
-    } else {
-
-      confedArmy -= loss;
-      unionArmy -= Math.floor(loss * 0.25);
-    }
-
-    document.getElementById("event").innerText =
-      attacker.toUpperCase() +
-      " failed to capture " +
-      defenderState;
-  }
-
-  unionArmy = Math.max(0, unionArmy);
-  confedArmy = Math.max(0, confedArmy);
-
-  updateUI();
-  checkWin();
-}
-
-function checkWin(){
-
-  const confedCount =
-    Object.values(stateOwner)
-      .filter(v => v === "confed").length;
-
-  const unionCount =
-    Object.values(stateOwner)
-      .filter(v => v === "union").length;
-
-  if(confedCount <= Math.floor(startingConfedStates / 2)){
-
-    endGame(
-      "Union Wins! The Confederacy surrendered after losing over half its territory."
-    );
-
-    return;
-  }
-
-  if(unionCount <= Math.floor(startingUnionStates / 2)){
-
-    endGame(
-      "Confederacy Wins! The Union government collapsed after losing over half its territory."
-    );
-
-    return;
-  }
-
-  if(confedArmy <= 0){
-
-    endGame(
-      "Union Wins! Confederate armies were destroyed."
-    );
-
-    return;
-  }
-
-  if(unionArmy <= 0){
-
-    endGame(
-      "Confederacy Wins! Union armies were destroyed."
-    );
-
-    return;
-  }
-}
-
-function endGame(text){
-
-  document.getElementById("endScreen").style.display = "flex";
-
-  document.getElementById("endScreen").innerHTML =
-    `<div>${text}</div>
-     <button onclick="location.reload()">Restart</button>`;
-}
-
-function restTurn(){
-
-  supplies += 25;
-  morale += 5;
-
-  document.getElementById("event").innerText =
-    "Armies regroup.";
-
-  updateUI();
-}
-
-function endTurn(){
-
-  month++;
-
-  if(month > 12){
-    month = 1;
-    year++;
-  }
-
-  let possibleTargets = [];
-
-  Object.keys(stateOwner).forEach(state => {
-
-    if(stateOwner[state] !== "confed"){
-
-      if(canAttack("confed", state)){
-        possibleTargets.push(state);
-      }
-    }
-  });
-
-  if(possibleTargets.length > 0){
-
-    const target =
-      possibleTargets[
-        Math.floor(Math.random()*possibleTargets.length)
-      ];
-
-    attack("confed", target);
-  }
-
-  unionArmy -= Math.floor(Math.random()*10);
-  confedArmy -= Math.floor(Math.random()*10);
-
-  supplies -= 2;
-
-  updateUI();
-  drawMap();
-  checkWin();
-}
-
-function updateUI(){
-
-  document.getElementById("unionArmy").innerText =
-    unionArmy;
-
-  document.getElementById("confedArmy").innerText =
-    confedArmy;
-
-  document.getElementById("supplies").innerText =
-    supplies;
-
-  document.getElementById("morale").innerText =
-    morale;
-
-  const months = [
-    "Jan","Feb","Mar","Apr","May","Jun",
-    "Jul","Aug","Sep","Oct","Nov","Dec"
-  ];
-
-  document.getElementById("timeline").innerText =
-    `${months[month-1]} ${year}`;
-}
-
-function drawMap(){
-
-  d3.json("https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json")
-    .then(us => {
-
-      states =
-        topojson.feature(us, us.objects.states).features;
-
-      states.forEach(s => {
-
-        const n = s?.properties?.name;
-
-        if(!n) return;
-
-        if(!stateOwner[n]){
-          initState(n);
-        }
-      });
-
-      d3.select("svg").remove();
-
-      const svg = d3.select("#map")
-        .append("svg")
-        .attr("viewBox","0 0 1000 600");
-
-      const path = d3.geoPath().projection(
-        d3.geoAlbersUsa()
-          .translate([500,300])
-          .scale(1200)
-      );
-
-      svg.selectAll("path")
-        .data(states)
-        .enter()
-        .append("path")
-        .attr("d", path)
-        .style("fill", d => {
-
-          const n = d?.properties?.name;
-
-          if(!n) return "#555";
-
-          return stateOwner[n] === "confed"
-            ? "#b22222"
-            : stateOwner[n] === "union"
-            ? "#2b4cff"
-            : "#555";
-        })
-        .style("stroke","#000")
-        .style("cursor","pointer")
-        .on("click",(event,d)=>{
-
-          const n = d?.properties?.name;
-
-          if(!n) return;
-
-          attack("union", n);
-
-          drawMap();
-        });
-
-    });
-}
-
-drawMap();
-updateUI();
-
-</script>
-
-</body>
-</html>
