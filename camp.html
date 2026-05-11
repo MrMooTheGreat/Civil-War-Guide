@@ -1,33 +1,22 @@
-<main class="camp-page">
+<main class="guide-page">
 
-  <!-- HERO -->
-  <section class="hero">
-
-    <div class="hero-content">
-
-      <span class="stamp">CIVIL WAR CAMP MANUAL</span>
-
-      <h1>Camp Life</h1>
-
-      <p>
-        Between battles, soldiers spent most of their time in camp, where daily
-        life became a mixture of routine, hardship, boredom, and moments of
-        friendship that helped them endure the war.
-      </p>
-
-    </div>
-
-  </section>
+  <!-- HEADER -->
+  <header class="guide-header">
+    <h1>Camp Life</h1>
+    <p>
+      Civil War Camp Manual: Daily Routines, Hardships, and Soldier Life
+    </p>
+  </header>
 
   <!-- DAILY LIFE -->
-  <section class="page-section">
+  <section class="guide-section">
 
     <h2>Life in Camp</h2>
 
     <p>
-      Camp life was repetitive but essential to maintaining the army.
-      Soldiers followed strict routines that included drilling, cleaning,
-      cooking, repairing equipment, and standing guard duty.
+      Camp life was repetitive but essential to maintaining the army. Soldiers
+      followed strict routines that included drilling, cleaning, cooking,
+      repairing equipment, and standing guard duty.
     </p>
 
     <ul>
@@ -37,19 +26,24 @@
       <li>Living in tents or winter huts</li>
     </ul>
 
-    <div class="image-box">
-      <img src="https://cdn.loc.gov/service/pnp/cwpb/01100/01149v.jpg" />
-      <p><strong>Winter Quarters:</strong> Soldiers built huts to survive cold seasons.</p>
-    </div>
+    <img
+      src="https://cdn.loc.gov/service/pnp/cwpb/01100/01149v.jpg"
+      alt="Winter Quarters"
+    >
+
+    <p class="caption">
+      Soldiers built huts to survive cold seasons.
+    </p>
 
   </section>
 
   <!-- FOOD -->
-  <section class="page-section">
+  <section class="guide-section">
 
     <h2>Food & Rations</h2>
 
     <h3>Daily Meals</h3>
+
     <p>
       Food in camp was simple and repetitive. Hardtack and salted meat formed
       the foundation of most meals.
@@ -63,6 +57,7 @@
     </ul>
 
     <h3>Cooking & Supply</h3>
+
     <p>
       Soldiers improvised meals depending on available supplies or trade.
     </p>
@@ -70,7 +65,7 @@
   </section>
 
   <!-- LEISURE -->
-  <section class="page-section">
+  <section class="guide-section">
 
     <h2>Leisure & Morale</h2>
 
@@ -86,15 +81,19 @@
       <li>Storytelling around campfires</li>
     </ul>
 
-    <div class="image-box">
-      <img src="https://cdn.loc.gov/service/pnp/ppmsca/34400/34462v.jpg" />
-      <p><strong>Camp Life:</strong> Small moments of rest helped morale.</p>
-    </div>
+    <img
+      src="https://cdn.loc.gov/service/pnp/ppmsca/34400/34462v.jpg"
+      alt="Camp Life"
+    >
+
+    <p class="caption">
+      Small moments of rest helped morale.
+    </p>
 
   </section>
 
   <!-- SHELTER -->
-  <section class="page-section">
+  <section class="guide-section">
 
     <h2>Shelter & Conditions</h2>
 
@@ -107,8 +106,8 @@
 
   </section>
 
-  <!-- CONCLUSION -->
-  <section class="final-note">
+  <!-- FINAL -->
+  <section class="guide-section">
 
     <h2>Life Between Battles</h2>
 
@@ -127,101 +126,94 @@
 <style>
 
 body{
-  margin:0;
+  background:#b39469;
+  color:#1c130d;
   font-family:"Times New Roman", serif;
-  background:#e6dccb;
-  color:#1c120b;
-  line-height:1.7;
+  margin:0;
+  line-height:1.8;
 }
 
-/* HERO */
-
-.hero{
-  padding:6rem 2rem;
-  text-align:center;
-  background:#e2d3b8;
-  border-bottom:3px double #3b2a1a;
-}
-
-.stamp{
-  display:inline-block;
-  border:1px solid #3b2a1a;
-  padding:.3rem .8rem;
-  letter-spacing:3px;
-  font-size:.8rem;
-  margin-bottom:1.5rem;
-}
-
-.hero h1{
-  font-size:3rem;
-  margin:0 0 1rem;
-}
-
-.hero p{
-  max-width:700px;
+/* PAGE */
+.guide-page{
+  max-width:1000px;
   margin:auto;
+  background:#c6a67b;
+  border-left:5px solid #3e2918;
+  border-right:5px solid #3e2918;
+  padding:30px;
 }
 
-/* PAGE SECTIONS */
-
-.page-section{
-  padding:3rem 10%;
-  border-bottom:1px solid rgba(0,0,0,.2);
+/* HEADER */
+.guide-header{
+  text-align:center;
+  border-bottom:4px double #4d321d;
+  padding-bottom:25px;
+  margin-bottom:40px;
 }
 
+.guide-header h1{
+  font-size:54px;
+  text-transform:uppercase;
+  letter-spacing:3px;
+  margin-bottom:10px;
+}
+
+.guide-header p{
+  font-size:18px;
+  font-style:italic;
+}
+
+/* SECTIONS */
+.guide-section{
+  margin-bottom:45px;
+  padding-bottom:30px;
+  border-bottom:2px solid rgba(0,0,0,.15);
+}
+
+/* HEADINGS */
 h2{
-  font-size:1.8rem;
-  border-bottom:2px solid #3b2a1a;
-  display:inline-block;
-  margin-bottom:1rem;
-  padding-bottom:.3rem;
+  font-size:34px;
+  text-transform:uppercase;
+  border-bottom:2px solid rgba(0,0,0,.2);
+  padding-bottom:8px;
+  margin-bottom:20px;
 }
 
 h3{
-  margin-top:1.5rem;
+  font-size:24px;
+  margin-top:20px;
+  margin-bottom:10px;
 }
 
+/* TEXT */
 p{
-  margin-bottom:1rem;
+  font-size:20px;
+  margin-bottom:18px;
 }
 
 /* LISTS */
-
-ul{
-  margin-left:1.2rem;
+ul,
+ol{
+  margin-left:28px;
+  margin-top:15px;
 }
 
-/* IMAGE BOX */
-
-.image-box{
-  margin-top:2rem;
-  border:1px solid #3b2a1a;
-  padding:.8rem;
-  background:#f3eadb;
+li{
+  margin-bottom:12px;
+  font-size:19px;
 }
 
-.image-box img{
+/* IMAGES */
+img{
   width:100%;
-  display:block;
-  filter:grayscale(40%) contrast(1.1);
+  margin-top:20px;
+  border:2px solid #4b301d;
 }
 
-.image-box p{
-  margin:.5rem 0 0;
-  font-size:.95rem;
-}
-
-/* FINAL */
-
-.final-note{
-  padding:4rem 10%;
-  text-align:center;
-  background:#e2d3b8;
-}
-
-.final-note h2{
-  border:none;
-  font-size:2rem;
+.caption{
+  font-size:16px;
+  font-style:italic;
+  margin-top:8px;
 }
 
 </style>
