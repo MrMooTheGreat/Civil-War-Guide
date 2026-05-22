@@ -89,6 +89,37 @@ button{
   font-size:36px;
   z-index:999;
 }
+
+/* NEW BOTTOM NAVIGATION */
+.bottom-nav{
+  text-align:center;
+  padding:20px;
+  background:#2a2a2a;
+  border-top:2px solid #444;
+  margin-top:20px;
+}
+
+.nav-btn{
+  display:inline-block;
+  background:#5b3a24;
+  color:#f2dfbe;
+  text-decoration:none;
+  padding:10px 16px;
+  margin:6px;
+  border:2px solid #2a1a10;
+  text-transform:uppercase;
+  font-size:14px;
+}
+
+.nav-btn:hover{
+  background:#6d4a30;
+}
+
+.disabled{
+  opacity:0.35;
+  cursor:default;
+  pointer-events:none;
+}
 </style>
 
 <script src="https://d3js.org/d3.v7.min.js"></script>
@@ -117,6 +148,13 @@ button{
 
 <div id="event" style="padding:10px;background:#222;">
 War begins...
+</div>
+
+<!-- BOTTOM NAVIGATION -->
+<div class="bottom-nav">
+  <a href="camp.html" class="nav-btn">◀</a>
+  <a href="index.html" class="nav-btn">Home</a>
+  <span class="nav-btn disabled">▶</span>
 </div>
 
 </div>
